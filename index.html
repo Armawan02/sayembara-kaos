@@ -3,17 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pemenang Sayembara Desain Kaos ISC</title>
+    <title>Pemesanan Kaos ISC</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800;900&family=Plus+Jakarta+Sans:wght@400;500;600&display=swap" rel="stylesheet">
-    <link rel="icon" href="https://isc.unsulbar.ac.id/landing/assets/img/logo-isc.png">
     <style>
         html { scroll-behavior: smooth; }
         body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #020617; color: #f8fafc; overflow-x: hidden; }
         h1, h2, h3, .logo-text { font-family: 'Outfit', sans-serif; }
         
-        /* Background Shapes */
+        /* Entrance Form Animation */
+        @keyframes entrance {
+            0% { opacity: 0; transform: translateY(40px) scale(0.98); }
+            100% { opacity: 1; transform: translateY(0) scale(1); }
+        }
+        .animate-entrance { 
+            opacity: 0; 
+            animation: entrance 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards; 
+        }
+
+        /* Background */
         .bg-shapes {
             position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -1; overflow: hidden; background: #020617;
         }
@@ -35,26 +44,26 @@
             box-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.9);
         }
 
-        .card-hover {
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        /* Forms */
+        label { color: #cbd5e1; font-weight: 500; letter-spacing: 0.5px; }
+        input[type="text"], input[type="tel"], input[type="url"], select, textarea {
+            background: rgba(2, 6, 23, 0.8) !important; border: 1px solid rgba(30, 58, 138, 0.3) !important; color: #f8fafc !important; transition: all 0.3s ease;
         }
-        .card-hover:hover {
-            transform: translateY(-10px) scale(1.02);
-            box-shadow: 0 20px 40px rgba(30, 58, 138, 0.6);
-            border-color: rgba(59, 130, 246, 0.5);
+        input:focus, textarea:focus, select:focus { border-color: #3b82f6 !important; box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.15) !important; outline: none; background: rgba(15, 23, 42, 0.9) !important; }
+        option { background: #0f172a; color: white;}
+        
+        .file-upload-wrapper {
+            position: relative; overflow: hidden; display: flex; flex-direction: column; align-items: center; justify-content: center; border: 2px dashed rgba(30, 58, 138, 0.6); border-radius: 0.75rem; padding: 2rem; background: rgba(2, 6, 23, 0.4); transition: all 0.3s;
         }
-
+        .file-upload-wrapper:hover { border-color: #3b82f6; background: rgba(30, 58, 138, 0.2); }
+        .file-upload-wrapper input[type=file] { font-size: 100px; position: absolute; left: 0; top: 0; opacity: 0; cursor: pointer; height: 100%; width: 100%; }
+        
         .btn-gradient { background: linear-gradient(135deg, #0f172a, #1e3a8a, #1d4ed8); background-size: 200% 200%; transition: all 0.4s ease; text-transform: uppercase; letter-spacing: 1px; font-weight: 800; }
         .btn-gradient:hover { background-position: 100% 0; transform: translateY(-3px); box-shadow: 0 15px 25px -10px rgba(30, 58, 138, 0.8); }
 
-        @keyframes entrance {
-            0% { opacity: 0; transform: translateY(40px) scale(0.98); }
-            100% { opacity: 1; transform: translateY(0) scale(1); }
-        }
-        .animate-entrance { 
-            opacity: 0; 
-            animation: entrance 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards; 
-        }
+        .loader { border: 4px solid rgba(255,255,255,0.1); border-top: 4px solid #3b82f6; border-radius: 50%; width: 50px; height: 50px; animation: spin 1s linear infinite; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        input[type="radio"] { accent-color: #3b82f6; width: 1.2rem; height: 1.2rem; }
     </style>
 </head>
 <body class="min-h-screen relative flex flex-col justify-start">
@@ -65,88 +74,519 @@
         <div class="shape shape-3"></div>
     </div>
 
-    <!-- HEADER / HERO -->
-    <section class="flex flex-col items-center justify-center relative z-20 text-center px-4 pt-20 pb-10 animate-entrance" style="animation-delay: 0.1s;">
+    <!-- HALAMAN 1 (HERO & DAFTAR PEMESAN) -->
+    <section class="min-h-screen flex flex-col items-center justify-start py-8 md:py-12 relative z-20 text-center px-4 animate-entrance" id="hero">
         
-        <div class="inline-flex items-center px-6 py-2 rounded-full bg-[#020617]/50 border border-blue-500/30 backdrop-blur-md mb-8 shadow-inner hover:scale-105 transition-transform">
-            <img src="https://isc.unsulbar.ac.id/landing/assets/img/logo-isc.png" alt="Logo ISC" class="w-8 h-8 mr-3 object-cover rounded-full border border-blue-400/40 bg-white">
-            <span class="text-blue-200 font-bold text-xs md:text-sm tracking-[0.1em] uppercase">Informatics Study Club</span>
+        <div class="mb-6">
+            <img src="https://isc.unsulbar.ac.id/landing/assets/img/logo-isc.webp" alt="Logo ISC" class="w-20 h-20 md:w-24 md:h-24 mx-auto object-cover rounded-full border border-blue-400/40 bg-white shadow-xl shadow-blue-500/20">
         </div>
 
-        <h1 class="text-4xl md:text-6xl font-black mb-4 tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-white to-blue-200 drop-shadow-xl">
-            PENGUMUMAN PEMENANG
-        </h1>
-        <h2 class="text-xl md:text-3xl font-semibold text-blue-400 mb-6 drop-shadow-md">
-            Sayembara Desain Kaos ISC
-        </h2>
-        <p class="text-blue-100/80 max-w-2xl mx-auto text-sm md:text-base leading-relaxed">
-            Terima kasih kepada seluruh peserta yang telah berpartisipasi dan menuangkan ide-ide kreatifnya. Berikut adalah 2 desain memukau yang terpilih!
-        </p>
+        <div class="glass-panel p-6 md:p-10 rounded-[2.5rem] shadow-2xl w-full max-w-5xl relative mb-10">
+            <div class="inline-flex items-center px-6 py-2 rounded-full bg-[#020617]/50 border border-blue-500/30 backdrop-blur-md mb-6 shadow-inner tracking-widest text-xs font-bold text-blue-200">
+                OFFICIAL MERCHANDISE
+            </div>
 
-    </section>
-
-    <!-- CONTENT: SHOWCASE MOCKUPS -->
-    <section class="max-w-6xl mx-auto w-full px-4 pb-20 relative z-20 animate-entrance" style="animation-delay: 0.3s;">
-        
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
+            <h1 class="text-4xl md:text-5xl font-black mb-8 tracking-tight text-white drop-shadow-xl uppercase">
+                Pemesanan Kaos ISC
+            </h1>
             
-            <!-- Desain 1 -->
-            <div class="glass-panel p-6 rounded-[2rem] card-hover flex flex-col relative group">
-                <div class="absolute -top-4 -right-4 w-12 h-12 bg-gradient-to-br from-blue-500 to-blue-700 rounded-full flex items-center justify-center shadow-lg shadow-blue-500/50 z-10 animate-bounce">
-                    <span class="text-white font-black text-2xl">1</span>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8 text-left">
+                <!-- Info Produk -->
+                <div class="bg-blue-900/20 border border-blue-500/30 p-6 rounded-2xl">
+                    <h3 class="text-xl font-bold text-blue-300 mb-4 border-b border-blue-500/20 pb-4"><i class="fas fa-info-circle mr-2"></i>Spesifikasi & Harga</h3>
+                    <ul class="space-y-4 text-sm md:text-base text-gray-300">
+                        <li class="flex items-center"><i class="fas fa-check-circle text-blue-400 mr-3 text-lg"></i><span><strong>Bahan:</strong> 24S Cotton Combed</span></li>
+                        <li class="flex items-center"><i class="fas fa-check-circle text-blue-400 mr-3 text-lg"></i><span><strong>Sablon:</strong> -</span></li>
+                        <li class="pt-4 mt-2">
+                             <div class="flex justify-between items-center bg-blue-950/60 p-4 rounded-xl border border-blue-500/30 shadow-inner">
+                                 <div>
+                                    <span class="block text-white font-bold tracking-wide">Lengan Pendek</span>
+                                    <span class="text-blue-300/80 text-xs uppercase tracking-widest mt-1 block">Harga Standar</span>
+                                 </div>
+                                 <div class="text-2xl font-black text-green-400">Rp 75.000</div>
+                             </div>
+                        </li>
+                        <li>
+                             <div class="flex justify-between items-center bg-gradient-to-r from-blue-950/60 to-indigo-900/40 p-4 rounded-xl border border-indigo-400/30 relative overflow-hidden shadow-lg">
+                                 <div class="absolute -right-8 top-3 bg-red-500 text-white text-[10px] uppercase font-black px-10 py-1 rotate-45 shadow-lg tracking-widest">Diskon</div>
+                                 <div>
+                                    <span class="block text-white font-bold tracking-wide">Lengan Panjang</span>
+                                    <div class="mt-1 flex items-center space-x-2">
+                                        <span class="line-through text-red-300 text-xs font-semibold">Rp 80.000</span>
+                                        <span class="text-blue-200/80 text-[10px] uppercase">Jadi</span>
+                                    </div>
+                                 </div>
+                                 <div class="text-2xl font-black text-green-400">Rp 75.000</div>
+                             </div>
+                        </li>
+                    </ul>
                 </div>
-                <div class="rounded-2xl overflow-hidden mb-6 border border-blue-900/50 bg-[#020617]/50 aspect-square flex items-center justify-center relative">
-                    <!-- Ganti src di bawah ini dengan nama file gambar mockup asli yang benar -->
-                    <img src="MarsyaD0225003.jpg" alt="Desain Terpilih 1" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
-                    <div class="absolute inset-0 bg-gradient-to-t from-[#020617] via-transparent to-transparent opacity-60"></div>
+
+                <!-- Size Chart -->
+                <div class="bg-blue-900/20 border border-blue-500/30 p-4 md:p-6 rounded-2xl flex flex-col h-full">
+                    <h3 class="text-xl font-bold text-blue-300 w-full text-left border-b border-blue-500/20 pb-3 mb-4"><i class="fas fa-ruler-combined mr-2"></i>Size Chart</h3>
+                    <div class="w-full text-sm text-blue-200/70 mb-3 text-left">Panduan ukuran (dalam centimeter)</div>
+                    
+                    <div class="w-full bg-[#020617]/50 border border-blue-800/50 rounded-xl overflow-x-auto shadow-inner mb-2 md:mt-auto">
+                        <table class="w-full text-center text-xs md:text-sm text-gray-300">
+                            <thead class="text-[10px] md:text-xs uppercase bg-blue-950/80 text-blue-300">
+                                <tr class="border-b border-blue-800/50">
+                                    <th scope="col" rowspan="2" class="px-2 md:px-4 py-2 font-black border-r border-blue-800/50 align-middle w-1/5">SIZE</th>
+                                    <th scope="col" colspan="2" class="px-2 md:px-4 py-2 font-bold border-r border-blue-800/50">BADAN</th>
+                                    <th scope="col" colspan="2" class="px-2 md:px-4 py-2 font-bold">LENGAN</th>
+                                </tr>
+                                <tr class="border-b border-blue-800/50 bg-blue-900/40 text-[9px] md:text-[10px]">
+                                    <th scope="col" class="px-1 md:px-2 py-1 md:py-2 border-r border-blue-800/50 text-blue-200">LEBAR</th>
+                                    <th scope="col" class="px-1 md:px-2 py-1 md:py-2 border-r border-blue-800/50 text-blue-200">PANJANG</th>
+                                    <th scope="col" class="px-1 md:px-2 py-1 md:py-2 border-r border-blue-800/50 text-blue-200">PENDEK</th>
+                                    <th scope="col" class="px-1 md:px-2 py-1 md:py-2 text-blue-200">PANJANG</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-blue-800/30 text-white font-semibold">
+                                <tr class="hover:bg-blue-900/30 transition-colors">
+                                    <td class="px-2 py-2 border-r border-blue-800/50 font-black text-blue-400">S</td>
+                                    <td class="px-2 py-2 border-r border-blue-800/50">47</td><td class="px-2 py-2 border-r border-blue-800/50">70</td><td class="px-2 py-2 border-r border-blue-800/50">21</td><td class="px-2 py-2">57</td>
+                                </tr>
+                                <tr class="hover:bg-blue-900/30 transition-colors bg-[#020617]/30">
+                                    <td class="px-2 py-2 border-r border-blue-800/50 font-black text-blue-400">M</td>
+                                    <td class="px-2 py-2 border-r border-blue-800/50">49</td><td class="px-2 py-2 border-r border-blue-800/50">71</td><td class="px-2 py-2 border-r border-blue-800/50">22</td><td class="px-2 py-2">58</td>
+                                </tr>
+                                <tr class="hover:bg-blue-900/30 transition-colors">
+                                    <td class="px-2 py-2 border-r border-blue-800/50 font-black text-blue-400">L</td>
+                                    <td class="px-2 py-2 border-r border-blue-800/50">51</td><td class="px-2 py-2 border-r border-blue-800/50">73</td><td class="px-2 py-2 border-r border-blue-800/50">23</td><td class="px-2 py-2">59</td>
+                                </tr>
+                                <tr class="hover:bg-blue-900/30 transition-colors bg-[#020617]/30">
+                                    <td class="px-2 py-2 border-r border-blue-800/50 font-black text-blue-400">XL</td>
+                                    <td class="px-2 py-2 border-r border-blue-800/50">53</td><td class="px-2 py-2 border-r border-blue-800/50">75</td><td class="px-2 py-2 border-r border-blue-800/50">24</td><td class="px-2 py-2">60</td>
+                                </tr>
+                                <tr class="hover:bg-blue-900/30 transition-colors">
+                                    <td class="px-2 py-2 border-r border-blue-800/50 font-black text-blue-400">2XL</td>
+                                    <td class="px-2 py-2 border-r border-blue-800/50">56</td><td class="px-2 py-2 border-r border-blue-800/50">77</td><td class="px-2 py-2 border-r border-blue-800/50">25</td><td class="px-2 py-2">61</td>
+                                </tr>
+                                <tr class="hover:bg-blue-900/30 transition-colors bg-[#020617]/30">
+                                    <td class="px-2 py-2 border-r border-blue-800/50 font-black text-blue-400">3XL</td>
+                                    <td class="px-2 py-2 border-r border-blue-800/50">60</td><td class="px-2 py-2 border-r border-blue-800/50">80</td><td class="px-2 py-2 border-r border-blue-800/50">26</td><td class="px-2 py-2">62</td>
+                                </tr>
+                                <tr class="hover:bg-blue-900/30 transition-colors">
+                                    <td class="px-2 py-2 border-r border-blue-800/50 font-black text-blue-400">4XL</td>
+                                    <td class="px-2 py-2 border-r border-blue-800/50">63</td><td class="px-2 py-2 border-r border-blue-800/50">82</td><td class="px-2 py-2 border-r border-blue-800/50">28</td><td class="px-2 py-2">63</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="text-[10px] md:text-xs text-blue-200/50 text-left w-full mt-2">* Batas toleransi kesalahan size chart ± 1 CM</div>
                 </div>
-                <h3 class="text-2xl font-bold text-white mb-4 text-center">Desain Terpilih 1</h3>
-                
-                <div class="text-blue-200/80 text-sm text-justify mb-6 flex-grow space-y-3 leading-relaxed">
-                    <p><span class="font-semibold text-blue-300">Konsep Utama:</span> Desain ini mengangkat konsep keterhubungan dan identitas sebagai seorang coder. Elemen hexagon pada latar melambangkan struktur kompleks dan saling terhubung, terinspirasi dari bentuk sarang lebah. Setiap hexagon merepresentasikan node dalam jaringan, dimana tiap elemen berisi simbol-simbol dunia informatika seperti bahasa, jaringan, dan khususnya logo ISC sendiri. Bermaksud bahwa dalam dunia IT, setiap bagian memiliki peran dan membentuk satu sistem yang kuat.</p>
-                    <p><span class="font-semibold text-blue-300">Identitas:</span> Diperkuat pada bagian identitas, digunakan kata “MaroonCoder” yang merepresentasikan anggota ISC adalah mahasiswa Informatika Universitas Sulawesi Barat sebagai bagian dari "Marooners" yang akan menuliskan kode untuk membuat situs web, aplikasi, dll. Huruf “O” diganti dengan simbol &lt;/&gt; (Code), yang menggambarkan inti dari aktivitas seorang programmer.</p>
-                    <p><span class="font-semibold text-blue-300">Tipografi:</span> Tulisan utama “Informatics Study Club” dibuat dengan gaya font yang lebih fun dan tidak kaku, menunjukkan bahwa komunitas ini bukan hanya tempat belajar formal, tetapi juga ruang berkembang, berkolaborasi, dan membangun relasi pertemanan.</p>
-                </div>
-                <!-- Link Download untuk Desain 1 -->
-                <a href="https://drive.google.com/file/d/1An7RFeqsG7ZL36RYSIHgneY2ecdr6D0H/view?usp=drive_link" target="_blank" rel="noopener noreferrer" class="mt-auto w-full inline-flex items-center justify-center btn-gradient text-white py-3 px-6 rounded-xl shadow-lg shadow-blue-900/50 text-sm hover:scale-105 transition-all outline-none">
-                    <i class="fab fa-google-drive text-lg mr-2"></i>
-                    <span>Download Vektor 1</span>
-                </a>
             </div>
 
-            <!-- Desain 2 -->
-            <div class="glass-panel p-6 rounded-[2rem] card-hover flex flex-col relative group">
-                <div class="absolute -top-4 -right-4 w-12 h-12 bg-gradient-to-br from-blue-500 to-blue-700 rounded-full flex items-center justify-center shadow-lg shadow-blue-500/50 z-10 animate-bounce" style="animation-delay: 0.2s;">
-                    <span class="text-white font-black text-2xl">2</span>
-                </div>
-                <div class="rounded-2xl overflow-hidden mb-6 border border-blue-900/50 bg-[#020617]/50 aspect-square flex items-center justify-center relative">
-                    <!-- Ganti src di bawah ini dengan nama file gambar mockup asli yang benar -->
-                    <img src="ArielTimotiusSudjana_D0225343.jpg" alt="Desain Terpilih 2" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
-                    <div class="absolute inset-0 bg-gradient-to-t from-[#020617] via-transparent to-transparent opacity-60"></div>
-                </div>
-                <h3 class="text-2xl font-bold text-white mb-4 text-center">Desain Terpilih 2</h3>
-                
-                <div class="text-blue-200/80 text-sm text-justify mb-6 flex-grow space-y-3 leading-relaxed">
-                    <p><span class="font-semibold text-blue-300">Makna Elemen:</span> Menunjukkan identitas yang fokus pada belajar, kolaborasi, dan menciptakan solusi. Logo di dada melambangkan kebanggaan dan keterikatan anggota. Warna biru tua menunjukkan profesionalisme, kecerdasan, dan kepercayaan. Bagian belakang menegaskan misi utama yaitu "Berantas Buta Coding".</p>
-                    <p><span class="font-semibold text-blue-300">Sintaks & Ikon:</span> Kode program <code class="bg-[#020617] text-blue-400 px-1 py-0.5 rounded text-xs border border-blue-900">print("Informatics Study Club");</code> menegaskan bahwa ISC ini adalah tempat untuk "menampilkan" atau mewujudkan karya-karya baru. Ikon-ikon di bawahnya melambangkan berbagai divisi dalam ISC.</p>
-                    <p><span class="font-semibold text-blue-300">Karakteristik:</span> Semua elemen secara keseluruhan menunjukkan bahwa anggota ISC adalah pribadi yang terstruktur, fokus, dan solutif di bidang teknologi.</p>
-                </div>
-                <!-- Link Download untuk Desain 2 -->
-                <a href="https://drive.google.com/file/d/1hoIYltwyetiFWzCy9gQ2i4EjwPkz-RB4/view?usp=drive_link" target="_blank" rel="noopener noreferrer" class="mt-auto w-full inline-flex items-center justify-center btn-gradient text-white py-3 px-6 rounded-xl shadow-lg shadow-blue-900/50 text-sm hover:scale-105 transition-all outline-none">
-                    <i class="fab fa-google-drive text-lg mr-2"></i>
-                    <span>Download Vektor 2</span>
-                </a>
+            <div class="mb-12 text-center">
+                <button type="button" id="startBtn" class="inline-flex items-center btn-gradient text-white py-4 px-12 rounded-full shadow-xl shadow-blue-900/50 text-lg font-black hover:scale-105 transition-all outline-none ring-4 ring-[#020617] border border-blue-500/40">
+                    <i class="fas fa-shopping-cart mr-3"></i>
+                    <span class="tracking-widest">PESAN SEKARANG</span>
+                </button>
             </div>
 
-        </div>
+            <!-- TABEL PEMESANAN -->
+            <div class="w-full mt-4 text-left border-t border-blue-800/50 pt-10" id="listSection">
+                <div class="flex flex-col md:flex-row items-start md:items-center justify-between mb-6 space-y-4 md:space-y-0">
+                    <div>
+                        <h2 class="text-2xl font-black text-white tracking-tight"><i class="fas fa-list-alt text-blue-400 mr-3 text-xl"></i>Daftar Reservasi Kaos</h2>
+                        <p class="text-sm text-blue-200/50 mt-1 ml-9">Diperbarui secara real-time berdasarkan data spreadsheet.</p>
+                    </div>
+                    <div class="bg-blue-900/20 border border-blue-500/30 px-5 py-3 rounded-xl text-sm font-bold text-blue-200 shadow-inner flex items-center">
+                        <i class="fas fa-users mr-3 text-blue-400"></i>Total Order: <span id="totalPesertaDisplay" class="text-white text-xl ml-2 font-black">0</span>
+                    </div>
+                </div>
 
-        <!-- KETERANGAN BAWAH -->
-        <div class="mt-16 text-center">
-            <h4 class="text-white font-semibold mb-2 tracking-wider">MARI TENTUKAN PILIHAN TERBAIK UNTUK KITA BERSAMA!</h4>
-            <p class="text-blue-400/80 text-sm mt-4"><i class="fas fa-info-circle mr-1"></i>Gunakan tombol di bawah masing-masing desain untuk mengunduh mentahannya (vektor).</p>
+                <div class="bg-[#020617]/40 border border-blue-800/30 rounded-2xl overflow-x-auto shadow-inner custom-scrollbar relative">
+                    <table class="w-full text-left text-sm text-gray-300 whitespace-nowrap min-w-[700px]">
+                        <thead class="text-xs uppercase bg-blue-950/60 text-blue-300 border-b border-blue-800/50 sticky top-0 z-10 backdrop-blur-md">
+                            <tr>
+                                <th scope="col" class="px-6 py-5 rounded-tl-2xl font-bold tracking-widest w-16">No</th>
+                                <th scope="col" class="px-6 py-5 font-bold tracking-widest">Nama Pemesan</th>
+                                <th scope="col" class="px-6 py-5 text-center font-bold tracking-widest">Ukuran</th>
+                                <th scope="col" class="px-6 py-5 text-center font-bold tracking-widest">Lengan</th>
+                                <th scope="col" class="px-6 py-5 text-center font-bold tracking-widest">Status</th>
+                                <th scope="col" class="px-6 py-5 text-right rounded-tr-2xl font-bold tracking-widest">Waktu Order</th>
+                            </tr>
+                        </thead>
+                        <tbody id="ordersTableBody" class="divide-y divide-blue-900/20">
+                            <!-- JS Inject -->
+                            <tr><td colspan="6" class="px-6 py-12 text-center text-blue-200/50"><div class="loader mx-auto mb-4"></div>Mengunduh Data...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
-
     </section>
 
+    <!-- HALAMAN 2 (FORM PEMESANAN) -->
+    <section id="formSection" class="min-h-screen py-10 px-4 relative flex items-center justify-center z-10 w-full hidden">
+        
+        <div class="w-full max-w-3xl mx-auto glass-panel rounded-3xl overflow-hidden shadow-2xl mt-4 relative">
+            
+            <button type="button" id="backBtn" class="absolute top-7 left-6 text-blue-400 hover:text-white transition-colors flex items-center z-50 text-sm md:text-base font-semibold group">
+                <i class="fas fa-arrow-left bg-blue-900/50 p-3 rounded-full group-hover:bg-blue-600 transition-colors shadow"></i> 
+             </button>
+
+            <!-- Header Mini Form -->
+            <div class="relative pt-8 pb-6 text-center border-b border-blue-900/40 bg-[#020617]/30">
+                <h2 class="text-3xl font-black tracking-tight text-white mt-1">Form Formulir Order</h2>
+                <p class="text-blue-300 text-sm mt-2 font-medium">Lengkapi data Anda dengan benar.</p>
+            </div>
+
+            <!-- Form Body -->
+            <form id="iscForm" class="p-8 md:p-10 space-y-8">
+                
+                <div class="grid grid-cols-1 gap-6">
+                    <div class="space-y-2">
+                        <label class="block text-sm uppercase font-bold tracking-wide"><i class="fas fa-user mr-2 opacity-70"></i>Nama Lengkap <span class="text-blue-400">*</span></label>
+                        <input type="text" id="nama" required class="w-full px-5 py-4 rounded-xl" placeholder="Nama untuk pesanan">
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="space-y-2">
+                        <label class="block text-sm uppercase font-bold tracking-wide"><i class="fab fa-whatsapp mr-2 opacity-70"></i>No. WhatsApp <span class="text-blue-400">*</span></label>
+                        <input type="tel" id="wa" required class="w-full px-5 py-4 rounded-xl" placeholder="08xxxxxxxxxx">
+                    </div>
+                    <div class="space-y-2">
+                        <label class="block text-sm uppercase font-bold tracking-wide"><i class="fas fa-ruler mr-2 opacity-70"></i>Ukuran Kaos <span class="text-blue-400">*</span></label>
+                        <select id="ukuran" required class="w-full px-5 py-4 rounded-xl custom-select appearance-none cursor-pointer font-bold">
+                            <option value="">-- Pilih Ukuran --</option>
+                            <option value="S">S (Small)</option>
+                            <option value="M">M (Medium)</option>
+                            <option value="L">L (Large)</option>
+                            <option value="XL">XL (Extra Large)</option>
+                            <option value="2XL">2XL (Double Extra Large)</option>
+                            <option value="3XL">3XL</option>
+                            <option value="4XL">4XL</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 gap-6">
+                    <div class="space-y-3">
+                        <label class="block text-sm uppercase font-bold tracking-wide"><i class="fas fa-tshirt mr-2 opacity-70"></i>Tipe Lengan <span class="text-blue-400">*</span></label>
+                        <div class="grid grid-cols-2 gap-4">
+                            <label class="relative flex items-center justify-center p-4 border-2 border-blue-800/50 rounded-xl cursor-pointer hover:border-blue-500 transition-colors group bg-[#020617]/40">
+                                <input type="radio" name="lengan" value="Pendek" required class="absolute top-4 right-4 as-hidden accent-blue-500 w-4 h-4">
+                                <div class="text-center group-hover:text-white transition-colors text-blue-200">
+                                    <span class="block font-bold text-lg mb-1">Pendek</span>
+                                    <span class="text-xs opacity-70">Rp 75.000</span>
+                                </div>
+                            </label>
+                            <label class="relative flex items-center justify-center p-4 border-2 border-blue-800/50 rounded-xl cursor-pointer hover:border-blue-500 transition-colors group bg-[#020617]/40">
+                                <input type="radio" name="lengan" value="Panjang" required class="absolute top-4 right-4 as-hidden accent-blue-500 w-4 h-4">
+                                <div class="text-center group-hover:text-white transition-colors text-blue-200">
+                                    <span class="block font-bold text-lg mb-1">Panjang</span>
+                                    <span class="text-[10px] text-red-300 line-through mr-1">Rp 80.000</span><span class="text-xs text-green-400 font-bold">Promo 75k</span>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="space-y-2 mt-4">
+                    <label class="block text-sm uppercase font-bold tracking-wide"><i class="fas fa-receipt mr-2 opacity-70"></i>Upload Bukti Transfer <span class="text-blue-400">*</span></label>
+                    <div class="file-upload-wrapper group bg-[#020617]/50 border-2 border-dashed border-blue-500/40 hover:border-blue-400 hover:bg-blue-900/10 transition-all rounded-2xl py-8">
+                        <input type="file" id="fileUpload" accept=".jpg,.jpeg,.png,.pdf" required>
+                        <div class="w-16 h-16 bg-blue-900/50 rounded-full flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                            <i class="fas fa-cloud-upload-alt text-2xl text-blue-400 group-hover:text-white"></i>
+                        </div>
+                        <p class="font-bold text-white mb-1 tracking-wide" id="fileNameDisplay">Klik atau Seret Bukti Transfer Kesini</p>
+                        <p class="text-xs text-blue-200/50 text-center uppercase tracking-widest font-semibold mt-2">Maks. 10MB (Otomatis Terkompresi)</p>
+                    </div>
+                </div>
+
+                <div class="pt-8 mb-2">
+                    <button type="submit" id="submitBtn" class="w-full btn-gradient text-white py-5 px-6 rounded-2xl shadow-xl shadow-blue-900/30 flex justify-center items-center space-x-3 text-lg font-black tracking-widest ring-1 ring-blue-400/50">
+                        <span>KIRIM PESANAN</span>
+                        <i class="fas fa-paper-plane text-xl ml-2 text-blue-200"></i>
+                    </button>
+                    <p class="text-center text-[11px] text-blue-300/50 mt-4"><i class="fas fa-lock mr-1"></i> Data dan bukti transfer Anda akan disimpan dengan aman.</p>
+                </div>
+            </form>
+        </div>
+    </section>
+
+    <!-- HALAMAN 3 (SUCCESS MODAL OVERLAY) -->
+    <div id="successModal" class="hidden fixed inset-0 bg-[#020617]/95 z-[60] flex justify-center items-center backdrop-blur-xl transition-opacity px-4">
+        <div class="glass-panel w-full max-w-md p-8 md:p-12 rounded-[2rem] flex flex-col items-center border border-green-500/30 relative animate-entrance text-center shadow-2xl shadow-green-900/20">
+            
+            <div class="w-24 h-24 bg-gradient-to-br from-green-400 to-emerald-600 rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg shadow-green-500/40 transform scale-110 mb-8 border-4 border-[#020617]">
+                <i class="fas fa-check text-4xl text-white drop-shadow"></i>
+            </div>
+            
+            <h3 class="text-2xl md:text-3xl font-black text-white mb-3 uppercase tracking-tight drop-shadow-md">Pesanan Berhasil!</h3>
+            <p class="text-blue-200 text-sm leading-relaxed mb-10">Data pesanan Anda telah tersimpan ke sistem. Kami akan segera mengonfirmasi status pembayaran Anda.</p>
+            
+            <button id="closeSuccessBtn" class="w-full btn-gradient text-white py-4 px-6 rounded-xl shadow-lg flex justify-center items-center space-x-2 font-bold tracking-widest text-sm">
+                <i class="fas fa-list mr-2"></i>
+                <span>LIHAT DAFTAR PESANAN</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- Modals Loading -->
+    <div id="loadingModal" class="hidden fixed inset-0 bg-[#020617]/90 z-[70] flex justify-center items-center backdrop-blur-md transition-opacity">
+        <div class="glass-panel p-8 rounded-3xl flex flex-col items-center space-y-6 border border-blue-500/20 shadow-2xl">
+            <div class="relative w-16 h-16 flex items-center justify-center">
+                <div class="loader absolute inset-0"></div>
+                <i class="fas fa-tshirt text-blue-400 text-xl animate-pulse"></i>
+            </div>
+            <p class="font-bold text-white tracking-widest uppercase text-sm animate-pulse">Memproses Data...</p>
+        </div>
+    </div>
+
+    <!-- SCRIPT UTAMA -->
+    <script>
+        // Ganti dengan URL deployment Web App GAS Anda setelah publish
+        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxB_g8bMMshNqeB65qHYyeYis9eEsrb1oUxiXQARrFrwCE5H8FDmq4-gM4GuIZQzfGj/exec';
+
+        const heroSection = document.getElementById('hero');
+        const formSection = document.getElementById('formSection');
+        const startBtn = document.getElementById('startBtn');
+        const backBtn = document.getElementById('backBtn');
+        
+        const successModal = document.getElementById('successModal');
+        const closeSuccessBtn = document.getElementById('closeSuccessBtn');
+
+        const totalPesertaDisplay = document.getElementById('totalPesertaDisplay');
+        const ordersTableBody = document.getElementById('ordersTableBody');
+        const fileUpload = document.getElementById('fileUpload');
+        const fileNameDisplay = document.getElementById('fileNameDisplay');
+
+        // Navigasi
+        startBtn.addEventListener('click', () => {
+            heroSection.classList.add('hidden');
+            formSection.classList.remove('hidden');
+            formSection.classList.add('animate-entrance');
+            window.scrollTo(0,0);
+        });
+
+        backBtn.addEventListener('click', () => {
+            formSection.classList.add('hidden');
+            formSection.classList.remove('animate-entrance');
+            heroSection.classList.remove('hidden');
+            heroSection.classList.add('animate-entrance');
+            fetchOrdersData(); // Segarkan data tabel jika kembali
+            window.scrollTo(0,0);
+        });
+
+        closeSuccessBtn.addEventListener('click', () => {
+             successModal.classList.add('hidden');
+             formSection.classList.add('hidden');
+             formSection.classList.remove('animate-entrance');
+             heroSection.classList.remove('hidden');
+             heroSection.classList.add('animate-entrance');
+             
+             // Scroll ke bagian tabel
+             document.getElementById('listSection').scrollIntoView({ behavior: 'smooth' });
+        });
+
+        fileUpload.addEventListener('change', function(e) {
+            const fileName = e.target.files[0]?.name || 'Klik atau Seret Bukti Transfer Kesini';
+            fileNameDisplay.textContent = fileName;
+            if(e.target.files[0]) {
+                fileNameDisplay.classList.add('text-blue-300');
+                fileNameDisplay.classList.remove('text-white');
+            } else {
+                fileNameDisplay.classList.remove('text-blue-300');
+                fileNameDisplay.classList.add('text-white');
+            }
+        });
+
+        // Pengambilan Data Tabel Realtime
+        async function fetchOrdersData() {
+            try {
+                let reportData = null;
+                if (typeof google !== 'undefined' && google.script) {
+                    reportData = await new Promise((resolve, reject) => {
+                        google.script.run
+                            .withSuccessHandler(resolve)
+                            .withFailureHandler(reject)
+                            .getOrders();
+                    });
+                } else {
+                    // Fetch external API (Website Github Pages mode)
+                    const res = await fetch(SCRIPT_URL + '?action=getOrders');
+                    if (!res.ok) throw new Error("Terjadi masalah jaringan");
+                    reportData = await res.json();
+                }
+                renderOrdersTable(reportData);
+            } catch (error) {
+                console.error(error);
+                ordersTableBody.innerHTML = `<tr><td colspan="6" class="px-6 py-8 text-center text-red-400">Gagal memuat data. Sistem berada di luar lingkungan tanpa Apps Script dan URL tidak valid / CORS diblokir.</td></tr>`;
+            }
+        }
+
+        function renderOrdersTable(data) {
+            totalPesertaDisplay.textContent = data.total;
+            ordersTableBody.innerHTML = '';
+            
+            if (data.orders && data.orders.length > 0) {
+                data.orders.forEach((order, index) => {
+                    const tr = document.createElement('tr');
+                    tr.className = "border-b border-blue-800/30 hover:bg-blue-900/20 transition-colors";
+                    
+                    let statusClass = "bg-yellow-500/10 text-yellow-500 border-yellow-500/20";
+                    let statusText = order.status;
+                    
+                    if (!statusText || statusText.trim() === "") statusText = "Menunggu";
+
+                    if (statusText.toLowerCase().includes('lunas') || statusText.toLowerCase().includes('sukses') || statusText.toLowerCase().includes('dikonfirmasi')) {
+                         statusClass = "bg-green-500/10 text-green-400 border-green-500/30";
+                    } else if (statusText.toLowerCase().includes('batal') || statusText.toLowerCase().includes('tolak')) {
+                         statusClass = "bg-red-500/10 text-red-400 border-red-500/30";
+                    }
+                    
+                    const statusBadge = `<span class="px-3 py-1 rounded-full text-[10px] font-black border uppercase tracking-widest shadow-sm ${statusClass}">${statusText}</span>`;
+                    
+                    const timeDisp = order.waktu ? order.waktu : "-";
+
+                    tr.innerHTML = `
+                        <td class="px-6 py-4 font-mono text-blue-400/50 text-xs">${index + 1}</td>
+                        <td class="px-6 py-4 font-bold text-white">${order.nama}</td>
+                        <td class="px-6 py-4 text-center font-black text-blue-300 text-base">${order.ukuran}</td>
+                        <td class="px-6 py-4 text-center text-gray-300 font-semibold">${order.lengan}</td>
+                        <td class="px-6 py-4 text-center">${statusBadge}</td>
+                        <td class="px-6 py-4 text-right text-[11px] text-blue-200/50 font-mono tracking-wider">${timeDisp}</td>
+                    `;
+                    ordersTableBody.appendChild(tr);
+                });
+            } else {
+                ordersTableBody.innerHTML = '<tr><td colspan="6" class="px-6 py-12 text-center text-blue-200/40 italic"><i class="fas fa-box-open text-2xl mb-3 block opacity-50"></i>Belum ada data pemesanan. Jadilah yang pertama!</td></tr>';
+            }
+        }
+        
+        // Panggil saat pertama dimuat
+        fetchOrdersData();
+
+        // Submit Form
+        const form = document.getElementById('iscForm');
+        const submitBtn = document.getElementById('submitBtn');
+        const loadingModal = document.getElementById('loadingModal');
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const file = fileUpload.files[0];
+            if (file && file.size > 10 * 1024 * 1024) {
+                alert('Whoops! Ukuran file aslimu terlalu besar. Maksimal 10MB ya.');
+                return;
+            }
+
+            loadingModal.classList.remove('hidden');
+            submitBtn.disabled = true;
+
+            try {
+                const processed = await getBase64AndCompress(file);
+                
+                let finalName = file.name;
+                if (processed.mime === 'image/jpeg' && !file.name.toLowerCase().endsWith('.jpg') && !file.name.toLowerCase().endsWith('.jpeg')) {
+                     finalName = file.name.substring(0, file.name.lastIndexOf('.')) + '.jpg';
+                }
+
+                const varLenganChecked = document.querySelector('input[name="lengan"]:checked');
+
+                const payload = {
+                    nama: document.getElementById('nama').value,
+                    wa: document.getElementById('wa').value,
+                    ukuran: document.getElementById('ukuran').value,
+                    lengan: varLenganChecked ? varLenganChecked.value : "",
+                    fileName: finalName,
+                    mimeType: processed.mime,
+                    fileData: processed.data.split(',')[1]
+                };
+
+                let reportData = null;
+
+                if (typeof google !== 'undefined' && google.script) {
+                    reportData = await new Promise((resolve, reject) => {
+                        google.script.run
+                            .withSuccessHandler(resolve)
+                            .withFailureHandler(reject)
+                            .processOrderForm(payload);
+                    });
+                    renderOrdersTable(reportData);
+                } else {
+                    // Eksekusi POST jarak jauh untuk Github Pages
+                    await fetch(SCRIPT_URL, {
+                        method: 'POST',
+                        mode: 'no-cors',
+                        headers: { 'Content-Type': 'text/plain' },
+                        body: JSON.stringify(payload)
+                    });
+                    
+                    // Tunggu sesaat agar server memproses, lalu update list via fetch
+                    setTimeout(() => {
+                        fetchOrdersData();
+                    }, 1500);
+                }
+
+                loadingModal.classList.add('hidden');
+                
+                // Tampilkan pesan sukses
+                successModal.classList.remove('hidden');
+
+                // Reset form
+                form.reset();
+                fileNameDisplay.textContent = 'Klik atau Seret Bukti Transfer Kesini';
+                fileNameDisplay.classList.remove('text-blue-300');
+                fileNameDisplay.classList.add('text-white');
+                submitBtn.disabled = false;
+
+            } catch (error) {
+                console.error('Error:', error);
+                alert('TERJADI ERROR: ' + error.message);
+                loadingModal.classList.add('hidden');
+                submitBtn.disabled = false;
+            }
+        });
+
+        function getBase64AndCompress(file) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                
+                if (!file.type.match(/image.*/)) {
+                    reader.onload = () => resolve({ data: reader.result, mime: file.type });
+                    reader.onerror = error => reject(error);
+                    reader.readAsDataURL(file);
+                    return;
+                }
+
+                reader.onload = function(e) {
+                    const img = new Image();
+                    img.onload = function() {
+                        const canvas = document.createElement('canvas');
+                        const MAX_WIDTH = 1200;
+                        const MAX_HEIGHT = 1200;
+                        let width = img.width;
+                        let height = img.height;
+
+                        if (width > height && width > MAX_WIDTH) {
+                            height *= MAX_WIDTH / width;
+                            width = MAX_WIDTH;
+                        } else if (height > MAX_HEIGHT) {
+                            width *= MAX_HEIGHT / height;
+                            height = MAX_HEIGHT;
+                        }
+
+                        canvas.width = width;
+                        canvas.height = height;
+                        const ctx = canvas.getContext('2d');
+                        ctx.drawImage(img, 0, 0, width, height);
+
+                        // Kualitas kompresi 0.70
+                        const dataUrl = canvas.toDataURL('image/jpeg', 0.70);
+                        resolve({ data: dataUrl, mime: 'image/jpeg' });
+                    };
+                    img.src = e.target.result;
+                };
+                reader.onerror = error => reject(error);
+                reader.readAsDataURL(file);
+            });
+        }
+    </script>
 </body>
 </html>
