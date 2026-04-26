@@ -627,6 +627,13 @@
             }
         };
 
+        // Event listener menutup modal pop-up gambar
+        document.getElementById('closeImgPreviewBtn').addEventListener('click', () => {
+            document.getElementById('imgPreviewModal').classList.add('hidden');
+            document.getElementById('imgPreviewContent').innerHTML = ''; // Bersihkan buffer memory
+        });
+
+
         // Submit Form Flow (File Upload, dll)
         const fileUploadEl = document.getElementById('fileUpload');
         const fileNameEl = document.getElementById('fileNameDisplay');
