@@ -643,7 +643,15 @@
         const fileNameEl = document.getElementById('fileNameDisplay');
         
         fileUploadEl.addEventListener('change', function(e) {
-            const fileName = e.target.files[0]?.name || 'Klik atau Seret Bukti Transfer Kesini';
+            let fileName = e.target.files[0]?.name || 'Klik atau Seret Bukti Transfer Kesini';
+            
+            // Perbaikan tampilan jika file diakses dari folder Android (WhatsApp) yang formatnya URL content://
+            if (fileName.includes('content://') || fileName.includes('com.whatsapp')) {
+                fileName = "Gambar_Bukti_WA.jpg";
+            }
+            // Singkat teks jika terlalu panjang
+            if (fileName.length > 35) fileName = fileName.substring(0, 15) + "..." + fileName.slice(-10);
+            
             fileNameEl.textContent = fileName;
             if(e.target.files[0]) {
                 fileNameEl.classList.add('text-blue-300');
@@ -665,8 +673,15 @@
             try {
                 const processed = await getBase64AndCompress(file);
                 let finalName = file.name;
-                if (processed.mime === 'image/jpeg' && !file.name.toLowerCase().endsWith('.jpg') && !file.name.toLowerCase().endsWith('.jpeg')) {
-                     finalName = file.name.substring(0, file.name.lastIndexOf('.')) + '.jpg';
+                
+                // Ubah nama file aneh dari android menjadi nama si pemesan
+                if (finalName.includes('content://') || finalName.includes('com.whatsapp')) {
+                     finalName = "BuktiTF_" + document.getElementById('nama').value.replace(/\s+/g, '_') + ".jpg";
+                } else if (processed.mime === 'image/jpeg' && !finalName.toLowerCase().endsWith('.jpg') && !finalName.toLowerCase().endsWith('.jpeg')) {
+                     // hilangkan ekstensi asli dan ubah ke jpg
+                     let dotIdx = finalName.lastIndexOf('.');
+                     if (dotIdx > 0) finalName = finalName.substring(0, dotIdx) + '.jpg';
+                     else finalName += '.jpg';
                 }
                 const varLenganChecked = document.querySelector('input[name="lengan"]:checked');
 
