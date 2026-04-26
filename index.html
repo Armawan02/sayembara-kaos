@@ -46,7 +46,7 @@
 
         /* Forms */
         label { color: #cbd5e1; font-weight: 500; letter-spacing: 0.5px; }
-        input[type="text"], input[type="tel"], input[type="url"], select, textarea {
+        input[type="text"], input[type="password"], input[type="tel"], input[type="url"], select, textarea {
             background: rgba(2, 6, 23, 0.8) !important; border: 1px solid rgba(30, 58, 138, 0.3) !important; color: #f8fafc !important; transition: all 0.3s ease;
         }
         input:focus, textarea:focus, select:focus { border-color: #3b82f6 !important; box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.15) !important; outline: none; background: rgba(15, 23, 42, 0.9) !important; }
@@ -62,8 +62,11 @@
         .btn-gradient:hover { background-position: 100% 0; transform: translateY(-3px); box-shadow: 0 15px 25px -10px rgba(30, 58, 138, 0.8); }
 
         .loader { border: 4px solid rgba(255,255,255,0.1); border-top: 4px solid #3b82f6; border-radius: 50%; width: 50px; height: 50px; animation: spin 1s linear infinite; }
+        .loader-sm { border-width: 3px; width: 20px; height: 20px; border-top-color: #ffffff; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
         input[type="radio"] { accent-color: #3b82f6; width: 1.2rem; height: 1.2rem; }
+
+        .status-dropdown { background-position: right .5rem center; padding-right: 1.5rem !important; }
     </style>
 </head>
 <body class="min-h-screen relative flex flex-col justify-start">
@@ -74,10 +77,19 @@
         <div class="shape shape-3"></div>
     </div>
 
+    <!-- Tombol Admin Login -->
+    <button id="adminLoginBtn" class="absolute top-6 right-6 md:top-8 md:right-8 text-blue-400 hover:text-white transition-colors p-3 rounded-full hover:bg-blue-900/50 group z-50">
+        <i class="fas fa-lock opacity-30 group-hover:opacity-100 transition-opacity"></i>
+    </button>
+    <!-- Tombol Logout -->
+    <button id="adminLogoutBtn" class="hidden absolute top-6 right-6 md:top-8 md:right-8 text-red-400 hover:text-white transition-colors p-3 rounded-full hover:bg-red-900/50 group z-50 font-bold text-xs flex items-center space-x-2 border border-red-500/30">
+        <i class="fas fa-sign-out-alt"></i> <span>Keluar Admin</span>
+    </button>
+
     <!-- HALAMAN 1 (HERO & DAFTAR PEMESAN) -->
     <section class="min-h-screen flex flex-col items-center justify-start py-8 md:py-12 relative z-20 text-center px-4 animate-entrance" id="hero">
         
-        <div class="mb-6">
+        <div class="mb-6 mt-4">
             <img src="https://isc.unsulbar.ac.id/landing/assets/img/logo-isc.webp" alt="Logo ISC" class="w-20 h-20 md:w-24 md:h-24 mx-auto object-cover rounded-full border border-blue-400/40 bg-white shadow-xl shadow-blue-500/20">
         </div>
 
@@ -178,7 +190,7 @@
                 </div>
             </div>
 
-            <div class="mb-12 text-center">
+            <div class="mb-12 text-center" id="btnOrderContainer">
                 <button type="button" id="startBtn" class="inline-flex items-center btn-gradient text-white py-4 px-12 rounded-full shadow-xl shadow-blue-900/50 text-lg font-black hover:scale-105 transition-all outline-none ring-4 ring-[#020617] border border-blue-500/40">
                     <i class="fas fa-shopping-cart mr-3"></i>
                     <span class="tracking-widest">PESAN SEKARANG</span>
@@ -189,7 +201,10 @@
             <div class="w-full mt-4 text-left border-t border-blue-800/50 pt-10" id="listSection">
                 <div class="flex flex-col md:flex-row items-start md:items-center justify-between mb-6 space-y-4 md:space-y-0">
                     <div>
-                        <h2 class="text-2xl font-black text-white tracking-tight"><i class="fas fa-list-alt text-blue-400 mr-3 text-xl"></i>Daftar Reservasi Kaos</h2>
+                        <h2 class="text-2xl font-black text-white tracking-tight flex items-center">
+                            <i class="fas fa-list-alt text-blue-400 mr-3 text-xl"></i>Daftar Reservasi Kaos
+                            <span id="badgeAdminMode" class="hidden ml-3 bg-red-600 text-white text-[10px] py-1 px-2 rounded-lg font-black uppercase tracking-wider animate-pulse">MODE ADMIN</span>
+                        </h2>
                         <p class="text-sm text-blue-200/50 mt-1 ml-9">Diperbarui secara real-time berdasarkan data spreadsheet.</p>
                     </div>
                     <div class="bg-blue-900/20 border border-blue-500/30 px-5 py-3 rounded-xl text-sm font-bold text-blue-200 shadow-inner flex items-center">
@@ -204,14 +219,16 @@
                                 <th scope="col" class="px-6 py-5 rounded-tl-2xl font-bold tracking-widest w-16">No</th>
                                 <th scope="col" class="px-6 py-5 font-bold tracking-widest">Nama Pemesan</th>
                                 <th scope="col" class="px-6 py-5 text-center font-bold tracking-widest">Ukuran</th>
+                                <th scope="col" class="px-6 py-5 text-center font-bold tracking-widest hidden admin-col">WA Kontak</th>
                                 <th scope="col" class="px-6 py-5 text-center font-bold tracking-widest">Lengan</th>
+                                <th scope="col" class="px-6 py-5 text-center font-bold tracking-widest hidden admin-col">Bukti TF</th>
                                 <th scope="col" class="px-6 py-5 text-center font-bold tracking-widest">Status</th>
                                 <th scope="col" class="px-6 py-5 text-right rounded-tr-2xl font-bold tracking-widest">Waktu Order</th>
                             </tr>
                         </thead>
                         <tbody id="ordersTableBody" class="divide-y divide-blue-900/20">
                             <!-- JS Inject -->
-                            <tr><td colspan="6" class="px-6 py-12 text-center text-blue-200/50"><div class="loader mx-auto mb-4"></div>Mengunduh Data...</td></tr>
+                            <tr><td colspan="8" class="px-6 py-12 text-center text-blue-200/50"><div class="loader mx-auto mb-4"></div>Mengunduh Data...</td></tr>
                         </tbody>
                     </table>
                 </div>
@@ -221,9 +238,7 @@
 
     <!-- HALAMAN 2 (FORM PEMESANAN) -->
     <section id="formSection" class="min-h-screen py-10 px-4 relative flex items-center justify-center z-10 w-full hidden">
-        
         <div class="w-full max-w-3xl mx-auto glass-panel rounded-3xl overflow-hidden shadow-2xl mt-4 relative">
-            
             <button type="button" id="backBtn" class="absolute top-7 left-6 text-blue-400 hover:text-white transition-colors flex items-center z-50 text-sm md:text-base font-semibold group">
                 <i class="fas fa-arrow-left bg-blue-900/50 p-3 rounded-full group-hover:bg-blue-600 transition-colors shadow"></i> 
              </button>
@@ -309,32 +324,50 @@
         </div>
     </section>
 
-    <!-- HALAMAN 3 (SUCCESS MODAL OVERLAY) -->
+    <!-- MODAL OVERLAYS -->
     <div id="successModal" class="hidden fixed inset-0 bg-[#020617]/95 z-[60] flex justify-center items-center backdrop-blur-xl transition-opacity px-4">
         <div class="glass-panel w-full max-w-md p-8 md:p-12 rounded-[2rem] flex flex-col items-center border border-green-500/30 relative animate-entrance text-center shadow-2xl shadow-green-900/20">
-            
             <div class="w-24 h-24 bg-gradient-to-br from-green-400 to-emerald-600 rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg shadow-green-500/40 transform scale-110 mb-8 border-4 border-[#020617]">
                 <i class="fas fa-check text-4xl text-white drop-shadow"></i>
             </div>
-            
             <h3 class="text-2xl md:text-3xl font-black text-white mb-3 uppercase tracking-tight drop-shadow-md">Pesanan Berhasil!</h3>
-            <p class="text-blue-200 text-sm leading-relaxed mb-10">Data pesanan Anda telah tersimpan ke sistem. Kami akan segera mengonfirmasi status pembayaran Anda.</p>
-            
+            <p class="text-blue-200 text-sm leading-relaxed mb-10">Data pesanan Anda telah tersimpan. Silakan tunggu konfirmasi selanjutnya dari admin.</p>
             <button id="closeSuccessBtn" class="w-full btn-gradient text-white py-4 px-6 rounded-xl shadow-lg flex justify-center items-center space-x-2 font-bold tracking-widest text-sm">
-                <i class="fas fa-list mr-2"></i>
-                <span>LIHAT DAFTAR PESANAN</span>
+                <i class="fas fa-list mr-2"></i><span>LIHAT DAFTAR PESANAN</span>
             </button>
         </div>
     </div>
 
-    <!-- Modals Loading -->
+    <!-- Modal Login Admin -->
+    <div id="loginModal" class="hidden fixed inset-0 bg-[#020617]/95 z-[80] flex justify-center items-center backdrop-blur-md transition-opacity px-4">
+        <div class="glass-panel w-full max-w-sm p-8 rounded-3xl flex flex-col items-center border border-blue-500/30 relative animate-entrance shadow-2xl">
+            <button id="closeLoginBtn" class="absolute top-4 right-4 text-blue-400 hover:text-white w-8 h-8 rounded-full bg-blue-900/40 flex justify-center items-center transition-colors"><i class="fas fa-times"></i></button>
+            <div class="w-16 h-16 bg-gradient-to-br from-blue-600 to-blue-900 rounded-full border border-blue-400/50 flex items-center justify-center mb-6 shadow-lg shadow-blue-500/50">
+                <i class="fas fa-user-shield text-2xl text-white"></i>
+            </div>
+            <h3 class="text-xl font-black text-white mb-2 uppercase tracking-widest">Portal Admin</h3>
+            <p class="text-xs text-blue-300/70 mb-6 font-semibold">Gunakan kredensial sheet role</p>
+            
+            <form id="loginForm" class="w-full space-y-4">
+                <div id="loginError" class="hidden w-full text-center bg-red-900/50 text-red-300 text-xs py-2 rounded-lg border border-red-500/30 mb-2"></div>
+                <input type="text" id="adminNama" required class="w-full px-5 py-3 rounded-xl border border-blue-500/30 bg-[#020617]/80 text-white placeholder-blue-300/40 text-sm focus:border-blue-400" placeholder="Nama Anda">
+                <input type="password" id="adminPass" required class="w-full px-5 py-3 rounded-xl border border-blue-500/30 bg-[#020617]/80 text-white placeholder-blue-300/40 text-sm focus:border-blue-400" placeholder="Kata Sandi">
+                <button type="submit" id="submitLoginBtn" class="w-full btn-gradient py-3 rounded-xl shadow-lg mt-2 font-bold tracking-widest text-white flex justify-center items-center">
+                    <span id="loginBtnText">LOGIN</span>
+                    <div id="loginSpinner" class="hidden loader loader-sm ml-3"></div>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modals Loading Global -->
     <div id="loadingModal" class="hidden fixed inset-0 bg-[#020617]/90 z-[70] flex justify-center items-center backdrop-blur-md transition-opacity">
         <div class="glass-panel p-8 rounded-3xl flex flex-col items-center space-y-6 border border-blue-500/20 shadow-2xl">
             <div class="relative w-16 h-16 flex items-center justify-center">
                 <div class="loader absolute inset-0"></div>
                 <i class="fas fa-tshirt text-blue-400 text-xl animate-pulse"></i>
             </div>
-            <p class="font-bold text-white tracking-widest uppercase text-sm animate-pulse">Memproses Data...</p>
+            <p class="font-bold text-white tracking-widest uppercase text-sm animate-pulse">Memproses...</p>
         </div>
     </div>
 
@@ -343,20 +376,26 @@
         // Ganti dengan URL deployment Web App GAS Anda setelah publish
         const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxB_g8bMMshNqeB65qHYyeYis9eEsrb1oUxiXQARrFrwCE5H8FDmq4-gM4GuIZQzfGj/exec';
 
+        // State Admin
+        let adminAuth = null;
+        const formStatusOptions = ['Pending', 'DP', 'Lunas', 'Proses', 'Selesai'];
+
         const heroSection = document.getElementById('hero');
         const formSection = document.getElementById('formSection');
         const startBtn = document.getElementById('startBtn');
         const backBtn = document.getElementById('backBtn');
-        
-        const successModal = document.getElementById('successModal');
-        const closeSuccessBtn = document.getElementById('closeSuccessBtn');
-
-        const totalPesertaDisplay = document.getElementById('totalPesertaDisplay');
         const ordersTableBody = document.getElementById('ordersTableBody');
-        const fileUpload = document.getElementById('fileUpload');
-        const fileNameDisplay = document.getElementById('fileNameDisplay');
+        const totalPesertaDisplay = document.getElementById('totalPesertaDisplay');
+        const loadingModal = document.getElementById('loadingModal');
+        
+        // Admin UI Elements
+        const adminLoginBtn = document.getElementById('adminLoginBtn');
+        const adminLogoutBtn = document.getElementById('adminLogoutBtn');
+        const loginModal = document.getElementById('loginModal');
+        const badgeAdminMode = document.getElementById('badgeAdminMode');
+        const btnOrderContainer = document.getElementById('btnOrderContainer');
 
-        // Navigasi
+        // Navigasi Standar
         startBtn.addEventListener('click', () => {
             heroSection.classList.add('hidden');
             formSection.classList.remove('hidden');
@@ -369,59 +408,139 @@
             formSection.classList.remove('animate-entrance');
             heroSection.classList.remove('hidden');
             heroSection.classList.add('animate-entrance');
-            fetchOrdersData(); // Segarkan data tabel jika kembali
-            window.scrollTo(0,0);
+            fetchData();
         });
 
-        closeSuccessBtn.addEventListener('click', () => {
-             successModal.classList.add('hidden');
+        document.getElementById('closeSuccessBtn').addEventListener('click', () => {
+             document.getElementById('successModal').classList.add('hidden');
              formSection.classList.add('hidden');
              formSection.classList.remove('animate-entrance');
              heroSection.classList.remove('hidden');
              heroSection.classList.add('animate-entrance');
-             
-             // Scroll ke bagian tabel
              document.getElementById('listSection').scrollIntoView({ behavior: 'smooth' });
         });
 
-        fileUpload.addEventListener('change', function(e) {
-            const fileName = e.target.files[0]?.name || 'Klik atau Seret Bukti Transfer Kesini';
-            fileNameDisplay.textContent = fileName;
-            if(e.target.files[0]) {
-                fileNameDisplay.classList.add('text-blue-300');
-                fileNameDisplay.classList.remove('text-white');
-            } else {
-                fileNameDisplay.classList.remove('text-blue-300');
-                fileNameDisplay.classList.add('text-white');
-            }
+        // Toggle Admin UI
+        adminLoginBtn.addEventListener('click', () => { loginModal.classList.remove('hidden'); });
+        document.getElementById('closeLoginBtn').addEventListener('click', () => { loginModal.classList.add('hidden'); document.getElementById('loginError').classList.add('hidden'); });
+        
+        adminLogoutBtn.addEventListener('click', () => {
+             adminAuth = null;
+             adminLogoutBtn.classList.add('hidden');
+             adminLoginBtn.classList.remove('hidden');
+             badgeAdminMode.classList.add('hidden');
+             btnOrderContainer.classList.remove('hidden'); // Munculkan kembali order btn
+             
+             // Sembunyikan Header Admin Col
+             document.querySelectorAll('.admin-col').forEach(el => el.classList.add('hidden'));
+             fetchData();
         });
 
-        // Pengambilan Data Tabel Realtime
-        async function fetchOrdersData() {
+        // Proses Login Admin
+        document.getElementById('loginForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const nInput = document.getElementById('adminNama').value;
+            const pInput = document.getElementById('adminPass').value;
+            
+            document.getElementById('loginBtnText').classList.add('hidden');
+            document.getElementById('loginSpinner').classList.remove('hidden');
+            document.getElementById('loginError').classList.add('hidden');
+            
             try {
-                let reportData = null;
-                if (typeof google !== 'undefined' && google.script) {
-                    reportData = await new Promise((resolve, reject) => {
-                        google.script.run
-                            .withSuccessHandler(resolve)
-                            .withFailureHandler(reject)
-                            .getOrders();
-                    });
+                const query = `?action=login&nama=${encodeURIComponent(nInput)}&password=${encodeURIComponent(pInput)}`;
+                const res = await fetch(SCRIPT_URL + query);
+                const result = await res.json();
+                
+                if (result.success) {
+                    adminAuth = { nama: nInput, password: pInput, role: result.role };
+                    loginModal.classList.add('hidden');
+                    adminLoginBtn.classList.add('hidden');
+                    adminLogoutBtn.classList.remove('hidden');
+                    badgeAdminMode.classList.remove('hidden');
+                    // btnOrderContainer.classList.add('hidden'); // Opsional: hilangkan tombol pesan buat Admin
+                    
+                    document.getElementById('loginForm').reset();
+                    
+                    // Munculkan Kolom Header Ekstra untuk Admin
+                    document.querySelectorAll('.admin-col').forEach(el => el.classList.remove('hidden'));
+                    
+                    // Tarik data admin
+                    fetchData();
                 } else {
-                    // Fetch external API (Website Github Pages mode)
-                    const res = await fetch(SCRIPT_URL + '?action=getOrders');
-                    if (!res.ok) throw new Error("Terjadi masalah jaringan");
-                    reportData = await res.json();
+                    document.getElementById('loginError').textContent = result.message || "Gagal otentikasi";
+                    document.getElementById('loginError').classList.remove('hidden');
                 }
-                renderOrdersTable(reportData);
+            } catch (err) {
+                document.getElementById('loginError').textContent = "Masalah koneksi jaringan server";
+                document.getElementById('loginError').classList.remove('hidden');
+            }
+            
+            document.getElementById('loginBtnText').classList.remove('hidden');
+            document.getElementById('loginSpinner').classList.add('hidden');
+        });
+
+        // Pengambilan Data
+        async function fetchData() {
+            ordersTableBody.innerHTML = `<tr><td colspan="8" class="px-6 py-12 text-center text-blue-200/50"><div class="loader mx-auto mb-4"></div>Mengunduh Data...</td></tr>`;
+            try {
+               let reportData;
+               if (adminAuth) {
+                   const qs = `?action=getAdminOrders&nama=${encodeURIComponent(adminAuth.nama)}&password=${encodeURIComponent(adminAuth.password)}`;
+                   const res = await fetch(SCRIPT_URL + qs);
+                   reportData = await res.json();
+               } else {
+                   const qs = `?action=getOrders`;
+                   const res = await fetch(SCRIPT_URL + qs);
+                   reportData = await res.json();
+               }
+               
+               if (reportData.error) {
+                   ordersTableBody.innerHTML = `<tr><td colspan="8" class="px-6 py-8 text-center text-red-400">Gagal otorisasi: ${reportData.error}</td></tr>`;
+                   adminLogoutBtn.click(); // force logout
+               } else {
+                   renderOrdersTable(reportData);
+               }
             } catch (error) {
-                console.error(error);
-                ordersTableBody.innerHTML = `<tr><td colspan="6" class="px-6 py-8 text-center text-red-400">Gagal memuat data. Sistem berada di luar lingkungan tanpa Apps Script dan URL tidak valid / CORS diblokir.</td></tr>`;
+                ordersTableBody.innerHTML = `<tr><td colspan="8" class="px-6 py-8 text-center text-red-400">Koneksi script terputus (CORS/URL Salah).</td></tr>`;
             }
         }
 
+        // Action Mengubah Status oleh Admin
+        window.changeStatus = async function(rowId, selectElement) {
+             const newStatus = selectElement.value;
+             const originalBg = selectElement.style.backgroundColor;
+             selectElement.disabled = true;
+             selectElement.style.opacity = '0.5';
+             
+             try {
+                 const qs = `?action=updateStatus&nama=${encodeURIComponent(adminAuth.nama)}&password=${encodeURIComponent(adminAuth.password)}&rowId=${encodeURIComponent(rowId)}&newStatus=${encodeURIComponent(newStatus)}`;
+                 const res = await fetch(SCRIPT_URL + qs);
+                 const out = await res.json();
+                 
+                 if (!out.success) {
+                     alert("Gagal memperbarui: " + (out.message||"error"));
+                 }
+             } catch(err) {
+                 alert("Gagal koneksi server saat memperbarui status!");
+             }
+             
+             selectElement.disabled = false;
+             selectElement.style.opacity = '1';
+             // Refresh style color
+             selectElement.className = getStatusSelectClassList(newStatus);
+        }
+        
+        function getStatusSelectClassList(statusTxt) {
+             const lower = statusTxt.toLowerCase();
+             let base = "status-dropdown rounded-lg text-xs font-bold px-3 py-2 border outline-none cursor-pointer appearance-none text-center shadow-md ";
+             if (lower === 'lunas' || lower === 'selesai') return base + "bg-green-900/40 text-green-400 border-green-500/50";
+             if (lower === 'proses') return base + "bg-blue-900/50 text-blue-300 border-blue-400/50";
+             if (lower === 'dp') return base + "bg-purple-900/40 text-purple-300 border-purple-400/50";
+             return base + "bg-yellow-900/40 text-yellow-500 border-yellow-500/50"; // pending
+        }
+
         function renderOrdersTable(data) {
-            totalPesertaDisplay.textContent = data.total;
+            totalPesertaDisplay.textContent = data.total || 0;
             ordersTableBody.innerHTML = '';
             
             if (data.orders && data.orders.length > 0) {
@@ -429,64 +548,84 @@
                     const tr = document.createElement('tr');
                     tr.className = "border-b border-blue-800/30 hover:bg-blue-900/20 transition-colors";
                     
-                    let statusClass = "bg-yellow-500/10 text-yellow-500 border-yellow-500/20";
-                    let statusText = order.status;
+                    let htmlData = `<td class="px-4 py-4 font-mono text-blue-400/50 text-xs">${index + 1}</td>
+                                    <td class="px-6 py-4 font-bold text-white">${order.nama}</td>
+                                    <td class="px-6 py-4 text-center font-black text-blue-300 text-sm md:text-base">${order.ukuran}</td>`;
                     
-                    if (!statusText || statusText.trim() === "") statusText = "Menunggu";
-
-                    if (statusText.toLowerCase().includes('lunas') || statusText.toLowerCase().includes('sukses') || statusText.toLowerCase().includes('dikonfirmasi')) {
-                         statusClass = "bg-green-500/10 text-green-400 border-green-500/30";
-                    } else if (statusText.toLowerCase().includes('batal') || statusText.toLowerCase().includes('tolak')) {
-                         statusClass = "bg-red-500/10 text-red-400 border-red-500/30";
+                    if (adminAuth) {
+                        htmlData += `<td class="px-6 py-4 text-center admin-col">
+                                       <a href="https://wa.me/${order.wa.replace(/^0/,'62')}" target="_blank" class="bg-[#25D366]/20 text-[#25D366] hover:bg-[#25D366]/40 px-3 py-1.5 rounded-lg text-xs font-bold font-mono transition-colors border border-[#25D366]/30"><i class="fab fa-whatsapp mr-1"></i> ${order.wa}</a>
+                                     </td>`;
                     }
                     
-                    const statusBadge = `<span class="px-3 py-1 rounded-full text-[10px] font-black border uppercase tracking-widest shadow-sm ${statusClass}">${statusText}</span>`;
-                    
-                    const timeDisp = order.waktu ? order.waktu : "-";
+                    htmlData += `<td class="px-6 py-4 text-center text-gray-300 font-semibold">${order.lengan}</td>`;
 
-                    tr.innerHTML = `
-                        <td class="px-6 py-4 font-mono text-blue-400/50 text-xs">${index + 1}</td>
-                        <td class="px-6 py-4 font-bold text-white">${order.nama}</td>
-                        <td class="px-6 py-4 text-center font-black text-blue-300 text-base">${order.ukuran}</td>
-                        <td class="px-6 py-4 text-center text-gray-300 font-semibold">${order.lengan}</td>
-                        <td class="px-6 py-4 text-center">${statusBadge}</td>
-                        <td class="px-6 py-4 text-right text-[11px] text-blue-200/50 font-mono tracking-wider">${timeDisp}</td>
-                    `;
+                    if (adminAuth) {
+                        htmlData += `<td class="px-6 py-4 text-center admin-col">
+                                       <a href="${order.bukti}" target="_blank" class="bg-blue-600/30 text-blue-300 hover:bg-blue-500/50 px-3 py-1.5 rounded-lg text-xs font-bold transition-colors border border-blue-400/30 flex items-center justify-center w-max mx-auto"><i class="fas fa-external-link-alt mr-2"></i>Cek TF</a>
+                                     </td>`;
+                                     
+                        // Admin Select Dropdown
+                        let selHtml = `<select onchange="changeStatus('${order.rowId}', this)" class="${getStatusSelectClassList(order.status)}">`;
+                        formStatusOptions.forEach(opt => {
+                             let selected = (opt.toLowerCase() === order.status.toLowerCase()) ? "selected" : "";
+                             selHtml += `<option value="${opt}" class="bg-[#0f172a] text-white" ${selected}>${opt}</option>`;
+                        });
+                        selHtml += `</select>`;
+                        
+                        htmlData += `<td class="px-4 py-4 text-center">${selHtml}</td>`;
+                    } else {
+                        // Public Badge format
+                        let statLower = (order.status||"").toLowerCase();
+                        let badgeCls = "bg-yellow-500/10 text-yellow-500 border-yellow-500/20";
+                        if (statLower === 'lunas' || statLower === 'selesai' || statLower === 'sukses') badgeCls = "bg-green-500/10 text-green-400 border-green-500/30";
+                        else if (statLower === 'proses') badgeCls = "bg-blue-500/10 text-blue-400 border-blue-500/30";
+                        else if (statLower === 'dp') badgeCls = "bg-purple-500/10 text-purple-300 border-purple-500/30";
+                        
+                        htmlData += `<td class="px-4 py-4 text-center"><span class="px-3 py-1 rounded-full text-[10px] font-black border uppercase tracking-widest shadow-sm ${badgeCls}">${order.status}</span></td>`;
+                    }
+
+                    htmlData += `<td class="px-6 py-4 text-right text-[11px] text-blue-200/50 font-mono tracking-wider">${order.waktu||"-"}</td>`;
+                    tr.innerHTML = htmlData;
                     ordersTableBody.appendChild(tr);
                 });
             } else {
-                ordersTableBody.innerHTML = '<tr><td colspan="6" class="px-6 py-12 text-center text-blue-200/40 italic"><i class="fas fa-box-open text-2xl mb-3 block opacity-50"></i>Belum ada data pemesanan. Jadilah yang pertama!</td></tr>';
+                ordersTableBody.innerHTML = '<tr><td colspan="8" class="px-6 py-12 text-center text-blue-200/40 italic"><i class="fas fa-box-open text-3xl mb-4 block opacity-40"></i>Belum ada data pemesanan.</td></tr>';
             }
         }
         
-        // Panggil saat pertama dimuat
-        fetchOrdersData();
+        fetchData();
 
-        // Submit Form
-        const form = document.getElementById('iscForm');
-        const submitBtn = document.getElementById('submitBtn');
-        const loadingModal = document.getElementById('loadingModal');
-
-        form.addEventListener('submit', async (e) => {
-            e.preventDefault();
-
-            const file = fileUpload.files[0];
-            if (file && file.size > 10 * 1024 * 1024) {
-                alert('Whoops! Ukuran file aslimu terlalu besar. Maksimal 10MB ya.');
-                return;
+        // Submit Form Flow (File Upload, dll)
+        const fileUploadEl = document.getElementById('fileUpload');
+        const fileNameEl = document.getElementById('fileNameDisplay');
+        
+        fileUploadEl.addEventListener('change', function(e) {
+            const fileName = e.target.files[0]?.name || 'Klik atau Seret Bukti Transfer Kesini';
+            fileNameEl.textContent = fileName;
+            if(e.target.files[0]) {
+                fileNameEl.classList.add('text-blue-300');
+                fileNameEl.classList.remove('text-white');
+            } else {
+                fileNameEl.classList.remove('text-blue-300');
+                fileNameEl.classList.add('text-white');
             }
+        });
+
+        document.getElementById('iscForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const file = fileUploadEl.files[0];
+            if (file && file.size > 10 * 1024 * 1024) return alert('Maksimal file 10MB.');
 
             loadingModal.classList.remove('hidden');
-            submitBtn.disabled = true;
+            document.getElementById('submitBtn').disabled = true;
 
             try {
                 const processed = await getBase64AndCompress(file);
-                
                 let finalName = file.name;
                 if (processed.mime === 'image/jpeg' && !file.name.toLowerCase().endsWith('.jpg') && !file.name.toLowerCase().endsWith('.jpeg')) {
                      finalName = file.name.substring(0, file.name.lastIndexOf('.')) + '.jpg';
                 }
-
                 const varLenganChecked = document.querySelector('input[name="lengan"]:checked');
 
                 const payload = {
@@ -499,91 +638,53 @@
                     fileData: processed.data.split(',')[1]
                 };
 
-                let reportData = null;
-
-                if (typeof google !== 'undefined' && google.script) {
-                    reportData = await new Promise((resolve, reject) => {
-                        google.script.run
-                            .withSuccessHandler(resolve)
-                            .withFailureHandler(reject)
-                            .processOrderForm(payload);
-                    });
-                    renderOrdersTable(reportData);
-                } else {
-                    // Eksekusi POST jarak jauh untuk Github Pages
-                    await fetch(SCRIPT_URL, {
-                        method: 'POST',
-                        mode: 'no-cors',
-                        headers: { 'Content-Type': 'text/plain' },
-                        body: JSON.stringify(payload)
-                    });
-                    
-                    // Tunggu sesaat agar server memproses, lalu update list via fetch
-                    setTimeout(() => {
-                        fetchOrdersData();
-                    }, 1500);
-                }
+                // External POST Call
+                await fetch(SCRIPT_URL, {
+                    method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'text/plain' },
+                    body: JSON.stringify(payload)
+                });
+                
+                setTimeout(() => { fetchData(); }, 1500);
 
                 loadingModal.classList.add('hidden');
-                
-                // Tampilkan pesan sukses
-                successModal.classList.remove('hidden');
+                document.getElementById('successModal').classList.remove('hidden');
 
-                // Reset form
-                form.reset();
-                fileNameDisplay.textContent = 'Klik atau Seret Bukti Transfer Kesini';
-                fileNameDisplay.classList.remove('text-blue-300');
-                fileNameDisplay.classList.add('text-white');
-                submitBtn.disabled = false;
-
+                document.getElementById('iscForm').reset();
+                fileNameEl.textContent = 'Klik atau Seret Bukti Transfer Kesini';
+                fileNameEl.classList.remove('text-blue-300');
+                fileNameEl.classList.add('text-white');
+                document.getElementById('submitBtn').disabled = false;
             } catch (error) {
-                console.error('Error:', error);
                 alert('TERJADI ERROR: ' + error.message);
                 loadingModal.classList.add('hidden');
-                submitBtn.disabled = false;
+                document.getElementById('submitBtn').disabled = false;
             }
         });
 
         function getBase64AndCompress(file) {
             return new Promise((resolve, reject) => {
                 const reader = new FileReader();
-                
                 if (!file.type.match(/image.*/)) {
                     reader.onload = () => resolve({ data: reader.result, mime: file.type });
                     reader.onerror = error => reject(error);
                     reader.readAsDataURL(file);
                     return;
                 }
-
                 reader.onload = function(e) {
                     const img = new Image();
                     img.onload = function() {
                         const canvas = document.createElement('canvas');
-                        const MAX_WIDTH = 1200;
-                        const MAX_HEIGHT = 1200;
-                        let width = img.width;
-                        let height = img.height;
-
-                        if (width > height && width > MAX_WIDTH) {
-                            height *= MAX_WIDTH / width;
-                            width = MAX_WIDTH;
-                        } else if (height > MAX_HEIGHT) {
-                            width *= MAX_HEIGHT / height;
-                            height = MAX_HEIGHT;
-                        }
-
-                        canvas.width = width;
-                        canvas.height = height;
+                        const MAX_W = 1200; const MAX_H = 1200;
+                        let width = img.width, height = img.height;
+                        if (width > height && width > MAX_W) { height *= MAX_W / width; width = MAX_W;} 
+                        else if (height > MAX_H) { width *= MAX_H / height; height = MAX_H;}
+                        canvas.width = width; canvas.height = height;
                         const ctx = canvas.getContext('2d');
                         ctx.drawImage(img, 0, 0, width, height);
-
-                        // Kualitas kompresi 0.70
-                        const dataUrl = canvas.toDataURL('image/jpeg', 0.70);
-                        resolve({ data: dataUrl, mime: 'image/jpeg' });
+                        resolve({ data: canvas.toDataURL('image/jpeg', 0.70), mime: 'image/jpeg' });
                     };
                     img.src = e.target.result;
                 };
-                reader.onerror = error => reject(error);
                 reader.readAsDataURL(file);
             });
         }
