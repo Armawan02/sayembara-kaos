@@ -497,8 +497,10 @@
                     loginModal.classList.add('hidden');
                     adminLoginBtn.classList.add('hidden');
                     adminLogoutBtn.classList.remove('hidden');
+                    
+                    let roleStr = result.role ? result.role.toUpperCase() : 'ADMIN';
+                    badgeAdminMode.textContent = `MODE ${roleStr}`;
                     badgeAdminMode.classList.remove('hidden');
-                    // btnOrderContainer.classList.add('hidden'); // Opsional: hilangkan tombol pesan buat Admin
                     
                     document.getElementById('loginForm').reset();
                     
