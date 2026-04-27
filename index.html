@@ -95,7 +95,7 @@
 
         <div class="glass-panel p-6 md:p-10 rounded-[2.5rem] shadow-2xl w-full max-w-5xl relative mb-10">
             <div class="inline-flex items-center px-6 py-2 rounded-full bg-[#020617]/50 border border-blue-500/30 backdrop-blur-md mb-6 shadow-inner tracking-widest text-xs font-bold text-blue-200">
-                OFFICIAL MERCHANDISE
+                INFORMATICS STUDY CLUB
             </div>
 
             <h1 class="text-4xl md:text-5xl font-black mb-8 tracking-tight text-white drop-shadow-xl uppercase">
@@ -437,6 +437,10 @@
                             <button type="button" onclick="document.getElementById('volume').stepUp()" class="w-14 h-14 rounded-lg bg-blue-900/40 text-blue-300 hover:text-white font-black text-2xl hover:bg-blue-600 transition-colors flex items-center justify-center border border-blue-500/30 shrink-0"><i class="fas fa-plus"></i></button>
                         </div>
                     </div>
+                </div>
+                <div class="space-y-2 mt-6">
+                    <label class="block text-sm uppercase font-bold tracking-wide"><i class="fas fa-map-marker-alt mr-2 opacity-70"></i>Lokasi & Penerima Tunai <span class="text-blue-400/50 text-[10px] font-normal tracking-normal ml-1 lowercase">(opsional jika tf)</span></label>
+                    <input type="text" id="keterangan" class="w-full px-5 py-4 rounded-xl bg-[#020617]/50 border border-blue-800/50 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 text-white placeholder-blue-200/30 transition-all outline-none" placeholder="Contoh: Prodi Informatika, Deananda">
                 </div>
 
                 <div class="space-y-2 mt-4">
@@ -830,8 +834,13 @@
                     const tr = document.createElement('tr');
                     tr.className = "border-b border-blue-800/30 hover:bg-blue-900/20 transition-colors";
                     
+                    let infoHtml = "";
+                    if (adminAuth && order.keterangan && order.keterangan !== "-" && order.keterangan.trim() !== "") {
+                        infoHtml = `<div class="mt-1.5 text-[10px] text-yellow-300 bg-yellow-900/30 px-2 py-1 rounded border border-yellow-500/20 whitespace-normal font-normal max-w-[150px] leading-relaxed shadow-inner"><i class="fas fa-map-marker-alt mr-1"></i>${order.keterangan}</div>`;
+                    }
+
                     let htmlData = `<td class="px-4 py-4 font-mono text-blue-400/50 text-xs">${index + 1}</td>
-                                    <td class="px-6 py-4 font-bold text-white">${order.nama}</td>
+                                    <td class="px-6 py-4 font-bold text-white">${order.nama}${infoHtml}</td>
                                     <td class="px-6 py-4 text-center font-black text-blue-300 text-sm md:text-base">${order.ukuran}</td>
                                     <td class="px-6 py-4 text-center text-gray-300 font-semibold">${order.lengan}</td>
                                     <td class="px-6 py-4 text-center font-bold text-white">${order.volume || 1} Pcs</td>`;
@@ -969,6 +978,7 @@
                     ukuran: document.getElementById('ukuran').value,
                     lengan: varLenganChecked ? varLenganChecked.value : "",
                     volume: document.getElementById('volume').value,
+                    keterangan: document.getElementById('keterangan').value,
                     fileName: finalName,
                     mimeType: processed.mime,
                     fileData: processed.data.split(',')[1]
