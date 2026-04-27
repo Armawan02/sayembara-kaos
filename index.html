@@ -120,15 +120,19 @@
                         </li>
                         <li>
                              <div class="flex justify-between items-center bg-gradient-to-r from-blue-950/60 to-indigo-900/40 p-4 rounded-xl border border-indigo-400/30 relative overflow-hidden shadow-lg">
-                                 <div class="absolute -right-8 top-3 bg-red-500 text-white text-[10px] uppercase font-black px-10 py-1 rotate-45 shadow-lg tracking-widest">Diskon</div>
+                                 <div id="badgePromoTop" class="absolute -right-8 top-3 bg-red-500 text-white text-[10px] uppercase font-black px-10 py-1 rotate-45 shadow-lg tracking-widest transition-opacity duration-500">Diskon</div>
                                  <div>
                                     <span class="block text-white font-bold tracking-wide">Lengan Panjang</span>
-                                    <div class="mt-1 flex items-center space-x-2">
+                                    <div id="promoDetailTop" class="mt-1 flex items-center space-x-2 transition-opacity duration-500">
                                         <span class="line-through text-red-300 text-xs font-semibold">Rp 80.000</span>
                                         <span class="text-blue-200/80 text-[10px] uppercase">Jadi</span>
                                     </div>
+                                    <div id="countdownPromo" class="mt-2 flex items-center space-x-1.5 text-[10px] font-mono text-yellow-300 bg-yellow-900/40 border border-yellow-500/30 px-2 py-1 rounded-md w-max shadow-inner">
+                                        <i class="fas fa-stopwatch animate-pulse text-yellow-400"></i>
+                                        <span id="timerText" class="font-bold tracking-wider">Memuat...</span>
+                                    </div>
                                  </div>
-                                 <div class="text-2xl font-black text-green-400">Rp 75.000</div>
+                                 <div id="priceTop" class="text-2xl font-black text-green-400 transition-colors duration-500">Rp 75.000</div>
                              </div>
                         </li>
                         <li>
@@ -415,7 +419,12 @@
                                 <input type="radio" name="lengan" value="Panjang" required class="absolute top-4 right-4 as-hidden accent-blue-500 w-4 h-4">
                                 <div class="text-center group-hover:text-white transition-colors text-blue-200">
                                     <span class="block font-bold text-lg mb-1">Panjang</span>
-                                    <span class="text-[10px] text-red-300 line-through mr-1">Rp 80.000</span><span class="text-xs text-green-400 font-bold">Promo 75k</span>
+                                    <div id="promoDetailForm" class="transition-opacity duration-500">
+                                        <span class="text-[10px] text-red-300 line-through mr-1">Rp 80.000</span><span class="text-xs text-green-400 font-bold">Promo 75k</span>
+                                    </div>
+                                    <div id="normalDetailForm" class="hidden transition-opacity duration-500">
+                                        <span class="text-xs opacity-70">Rp 80.000</span>
+                                    </div>
                                 </div>
                             </label>
                         </div>
@@ -514,6 +523,53 @@
     <script>
         // Ganti dengan URL deployment Web App GAS Anda setelah publish
         const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxB_g8bMMshNqeB65qHYyeYis9eEsrb1oUxiXQARrFrwCE5H8FDmq4-gM4GuIZQzfGj/exec';
+
+        // Countdown Promo Lengan Panjang (Hingga 18:00 WITA Hari Ini)
+        const promoDeadline = new Date("2026-04-27T18:00:00+08:00").getTime(); // WITA adalah UTC+8
+        
+        function updatePromoTimer() {
+            const now = new Date().getTime();
+            const distance = promoDeadline - now;
+
+            if (distance < 0) {
+                // Waktu Habis - Sembunyikan elemen promo & ubah harga
+                const cdPromo = document.getElementById('countdownPromo');
+                if (cdPromo) cdPromo.classList.add('hidden');
+                
+                const badgePromoTop = document.getElementById('badgePromoTop');
+                if (badgePromoTop) badgePromoTop.classList.add('hidden');
+                
+                const promoDetailTop = document.getElementById('promoDetailTop');
+                if (promoDetailTop) promoDetailTop.classList.add('hidden');
+                
+                const priceTop = document.getElementById('priceTop');
+                if (priceTop) {
+                    priceTop.textContent = "Rp 80.000";
+                    priceTop.classList.replace('text-green-400', 'text-white');
+                }
+                
+                const promoDetailForm = document.getElementById('promoDetailForm');
+                if (promoDetailForm) promoDetailForm.classList.add('hidden');
+                
+                const normalDetailForm = document.getElementById('normalDetailForm');
+                if (normalDetailForm) normalDetailForm.classList.remove('hidden');
+                
+                return;
+            }
+
+            // Jika masih promo, update teks timer
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            const timerText = document.getElementById('timerText');
+            if (timerText) {
+                timerText.textContent = `${("0"+hours).slice(-2)}j ${("0"+minutes).slice(-2)}m ${("0"+seconds).slice(-2)}d`;
+            }
+        }
+        
+        setInterval(updatePromoTimer, 1000);
+        updatePromoTimer(); // Panggil sekali langsung saat halaman diload
 
         // State Admin
         let adminAuth = null;
@@ -875,6 +931,16 @@
 
         document.getElementById('iscForm').addEventListener('submit', async (e) => {
             e.preventDefault();
+
+            const inputNama = document.getElementById('nama').value.trim();
+            if (currentOrdersData && currentOrdersData.orders) {
+                const isDuplicate = currentOrdersData.orders.some(o => (o.nama || "").toLowerCase() === inputNama.toLowerCase());
+                if (isDuplicate) {
+                    alert(`Maaf, nama "${inputNama}" sudah terdaftar sebelumnya.\n\nJika Anda orang yang berbeda atau ingin memesan lagi dengan data terpisah, mohon tambahkan nama belakang atau inisial.`);
+                    return;
+                }
+            }
+
             const file = fileUploadEl.files[0];
             if (file && file.size > 10 * 1024 * 1024) return alert('Maksimal file 10MB.');
 
