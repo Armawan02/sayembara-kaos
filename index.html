@@ -95,7 +95,7 @@
 
         <div class="glass-panel p-6 md:p-10 rounded-[2.5rem] shadow-2xl w-full max-w-5xl relative mb-10">
             <div class="inline-flex items-center px-6 py-2 rounded-full bg-[#020617]/50 border border-blue-500/30 backdrop-blur-md mb-6 shadow-inner tracking-widest text-xs font-bold text-blue-200">
-                OFFICIAL MERCHANDISE
+                INFORMATICS STUDY CLUB
             </div>
 
             <h1 class="text-4xl md:text-5xl font-black mb-8 tracking-tight text-white drop-shadow-xl uppercase">
@@ -239,7 +239,7 @@
 
                 <!-- STATISTIK CREATIVE DASHBOARD -->
                 <div class="hidden admin-col mb-6" id="statsContainer">
-                    <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
+                    <div class="grid grid-cols-2 lg:grid-cols-5 gap-4 mb-4">
                         <!-- Total Lunas -->
                         <div class="bg-gradient-to-br from-[#020617]/80 to-green-950/20 border border-green-500/30 rounded-xl p-4 flex items-center space-x-4 shadow-lg hover:border-green-400/50 transition-colors">
                             <div class="w-12 h-12 rounded-full bg-green-900/30 flex items-center justify-center border border-green-500/40 shadow-inner">
@@ -278,6 +278,16 @@
                             <div>
                                 <div class="text-xs text-blue-300/70 font-bold uppercase tracking-widest mb-0.5">Proses Cetak</div>
                                 <div class="text-2xl font-black text-white" id="statProses">0</div>
+                            </div>
+                        </div>
+                        <!-- Total Selesai -->
+                        <div class="bg-gradient-to-br from-[#020617]/80 to-teal-950/20 border border-teal-500/30 rounded-xl p-4 flex items-center space-x-4 shadow-lg hover:border-teal-400/50 transition-colors">
+                            <div class="w-12 h-12 rounded-full bg-teal-900/30 flex items-center justify-center border border-teal-500/40 shadow-inner">
+                                <i class="fas fa-box-open text-teal-400 text-xl"></i>
+                            </div>
+                            <div>
+                                <div class="text-xs text-teal-300/70 font-bold uppercase tracking-widest mb-0.5">Selesai</div>
+                                <div class="text-2xl font-black text-white" id="statSelesai">0</div>
                             </div>
                         </div>
                     </div>
@@ -681,12 +691,13 @@
                 ordersToStats = ordersToStats.filter(o => (o.nama || "").toLowerCase().includes(lowerQ));
             }
             
-            let lunas = 0, dp = 0, pending = 0, proses = 0;
+            let lunas = 0, dp = 0, pending = 0, proses = 0, selesai = 0;
             let sizesCount = {};
 
             ordersToStats.forEach(o => {
                 const stat = (o.status || "").toLowerCase();
-                if (stat === 'lunas' || stat === 'selesai' || stat === 'sukses') lunas++;
+                if (stat === 'lunas') lunas++;
+                else if (stat === 'selesai' || stat === 'sukses') selesai++;
                 else if (stat === 'dp') dp++;
                 else if (stat === 'proses') proses++;
                 else pending++; // 'pending' atau yang tidak dikenali masuk sini
@@ -699,6 +710,7 @@
             if(document.getElementById('statDP')) document.getElementById('statDP').textContent = dp;
             if(document.getElementById('statPending')) document.getElementById('statPending').textContent = pending;
             if(document.getElementById('statProses')) document.getElementById('statProses').textContent = proses;
+            if(document.getElementById('statSelesai')) document.getElementById('statSelesai').textContent = selesai;
 
             const sizeContainer = document.getElementById('statSizes');
             if(sizeContainer) {
