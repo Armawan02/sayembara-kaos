@@ -307,12 +307,12 @@
                             <tr>
                                 <th scope="col" class="px-6 py-5 rounded-tl-2xl font-bold tracking-widest w-16">No</th>
                                 <th scope="col" class="px-6 py-5 font-bold tracking-widest">Nama Pemesan</th>
-                                <th scope="col" class="px-6 py-5 text-center font-bold tracking-widest">Jml</th>
                                 <th scope="col" class="px-6 py-5 text-center font-bold tracking-widest">Ukuran</th>
-                                <th scope="col" class="px-6 py-5 text-center font-bold tracking-widest hidden admin-col">WA Kontak</th>
                                 <th scope="col" class="px-6 py-5 text-center font-bold tracking-widest">Lengan</th>
+                                <th scope="col" class="px-6 py-5 text-center font-bold tracking-widest">Jml</th>
                                 <th scope="col" class="px-6 py-5 text-center font-bold tracking-widest hidden admin-col">Bukti TF</th>
                                 <th scope="col" class="px-6 py-5 text-center font-bold tracking-widest">Status</th>
+                                <th scope="col" class="px-6 py-5 text-center font-bold tracking-widest hidden admin-col">WA Kontak</th>
                                 <th scope="col" class="px-6 py-5 text-right rounded-tr-2xl font-bold tracking-widest">Waktu Order</th>
                             </tr>
                         </thead>
@@ -775,19 +775,9 @@
                     
                     let htmlData = `<td class="px-4 py-4 font-mono text-blue-400/50 text-xs">${index + 1}</td>
                                     <td class="px-6 py-4 font-bold text-white">${order.nama}</td>
-                                    <td class="px-6 py-4 text-center font-bold text-white">${order.volume || 1} Pcs</td>
-                                    <td class="px-6 py-4 text-center font-black text-blue-300 text-sm md:text-base">${order.ukuran}</td>`;
-                    
-                    if (adminAuth) {
-                        const safeWA = String(order.wa || "");
-                        const safeStatus = String(order.status || "");
-                        
-                        htmlData += `<td class="px-6 py-4 text-center admin-col">
-                                       <a href="https://wa.me/${safeWA.replace(/^0/,'62')}" target="_blank" class="bg-[#25D366]/20 text-[#25D366] hover:bg-[#25D366]/40 px-3 py-1.5 rounded-lg text-xs font-bold font-mono transition-colors border border-[#25D366]/30"><i class="fab fa-whatsapp mr-1"></i> ${safeWA}</a>
-                                     </td>`;
-                    }
-                    
-                    htmlData += `<td class="px-6 py-4 text-center text-gray-300 font-semibold">${order.lengan}</td>`;
+                                    <td class="px-6 py-4 text-center font-black text-blue-300 text-sm md:text-base">${order.ukuran}</td>
+                                    <td class="px-6 py-4 text-center text-gray-300 font-semibold">${order.lengan}</td>
+                                    <td class="px-6 py-4 text-center font-bold text-white">${order.volume || 1} Pcs</td>`;
 
                      if (adminAuth) {
                         htmlData += `<td class="px-6 py-4 text-center admin-col">
@@ -804,6 +794,11 @@
                         selHtml += `</select>`;
                         
                         htmlData += `<td class="px-4 py-4 text-center">${selHtml}</td>`;
+                        
+                        const safeWA = String(order.wa || "");
+                        htmlData += `<td class="px-6 py-4 text-center admin-col">
+                                       <a href="https://wa.me/${safeWA.replace(/^0/,'62')}" target="_blank" class="bg-[#25D366]/20 text-[#25D366] hover:bg-[#25D366]/40 px-3 py-1.5 rounded-lg text-xs font-bold font-mono transition-colors border border-[#25D366]/30"><i class="fab fa-whatsapp mr-1"></i> ${safeWA}</a>
+                                     </td>`;
                     } else {
                         // Public Badge format
                         let statLower = (order.status||"").toLowerCase();
