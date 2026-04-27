@@ -440,14 +440,15 @@
                 </div>
 
                 <div class="space-y-2 mt-4">
-                    <label class="block text-sm uppercase font-bold tracking-wide"><i class="fas fa-receipt mr-2 opacity-70"></i>Upload Bukti Transfer <span class="text-blue-400">*</span></label>
-                    <div class="file-upload-wrapper group bg-[#020617]/50 border-2 border-dashed border-blue-500/40 hover:border-blue-400 hover:bg-blue-900/10 transition-all rounded-2xl py-8">
-                        <input type="file" id="fileUpload" accept=".jpg,.jpeg,.png,.pdf" required>
+                    <label class="block text-sm uppercase font-bold tracking-wide"><i class="fas fa-camera mr-2 opacity-70"></i>Upload Bukti Pembayaran <span class="text-blue-400">*</span></label>
+                    <div class="file-upload-wrapper group bg-[#020617]/50 border-2 border-dashed border-blue-500/40 hover:border-blue-400 hover:bg-blue-900/10 transition-all rounded-2xl py-6 md:py-8">
+                        <input type="file" id="fileUpload" accept="image/*,.pdf" required>
                         <div class="w-16 h-16 bg-blue-900/50 rounded-full flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-                            <i class="fas fa-cloud-upload-alt text-2xl text-blue-400 group-hover:text-white"></i>
+                            <i class="fas fa-image text-2xl text-blue-400 group-hover:text-white"></i>
                         </div>
-                        <p class="font-bold text-white mb-1 tracking-wide" id="fileNameDisplay">Klik atau Seret Bukti Transfer Kesini</p>
-                        <p class="text-xs text-blue-200/50 text-center uppercase tracking-widest font-semibold mt-2">Maks. 10MB (Otomatis Terkompresi)</p>
+                        <p class="font-bold text-white mb-2 tracking-wide text-center px-4" id="fileNameDisplay">Ketuk untuk Pilih Foto atau Ambil Gambar</p>
+                        <p class="text-[10.5px] text-yellow-300/90 text-center mx-4 md:mx-10 mt-1 mb-3 bg-yellow-900/30 py-2 px-3 rounded-xl border border-yellow-500/30 leading-relaxed font-medium">Jika Bayar <strong>Transfer</strong>: Upload Foto Struk/Layar HP.<br>Jika Bayar <strong>Tunai</strong>: Wajib Upload Foto Wajah (Selfie).</p>
+                        <p class="text-[10px] text-blue-200/40 text-center uppercase tracking-widest font-mono">Maks. 10MB (Otomatis Terkompresi)</p>
                     </div>
                 </div>
 
