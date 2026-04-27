@@ -95,7 +95,7 @@
 
         <div class="glass-panel p-6 md:p-10 rounded-[2.5rem] shadow-2xl w-full max-w-5xl relative mb-10">
             <div class="inline-flex items-center px-6 py-2 rounded-full bg-[#020617]/50 border border-blue-500/30 backdrop-blur-md mb-6 shadow-inner tracking-widest text-xs font-bold text-blue-200">
-                INFORMATICS STUDY CLUB
+                OFFICIAL MERCHANDISE
             </div>
 
             <h1 class="text-4xl md:text-5xl font-black mb-8 tracking-tight text-white drop-shadow-xl uppercase">
@@ -307,6 +307,7 @@
                             <tr>
                                 <th scope="col" class="px-6 py-5 rounded-tl-2xl font-bold tracking-widest w-16">No</th>
                                 <th scope="col" class="px-6 py-5 font-bold tracking-widest">Nama Pemesan</th>
+                                <th scope="col" class="px-6 py-5 text-center font-bold tracking-widest">Jml</th>
                                 <th scope="col" class="px-6 py-5 text-center font-bold tracking-widest">Ukuran</th>
                                 <th scope="col" class="px-6 py-5 text-center font-bold tracking-widest hidden admin-col">WA Kontak</th>
                                 <th scope="col" class="px-6 py-5 text-center font-bold tracking-widest">Lengan</th>
@@ -399,7 +400,7 @@
                     </div>
                 </div>
 
-                <div class="grid grid-cols-1 gap-6">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div class="space-y-3">
                         <label class="block text-sm uppercase font-bold tracking-wide"><i class="fas fa-tshirt mr-2 opacity-70"></i>Tipe Lengan <span class="text-blue-400">*</span></label>
                         <div class="grid grid-cols-2 gap-4">
@@ -417,6 +418,14 @@
                                     <span class="text-[10px] text-red-300 line-through mr-1">Rp 80.000</span><span class="text-xs text-green-400 font-bold">Promo 75k</span>
                                 </div>
                             </label>
+                        </div>
+                    </div>
+                    <div class="space-y-3">
+                        <label class="block text-sm uppercase font-bold tracking-wide"><i class="fas fa-cubes mr-2 opacity-70"></i>Jumlah Pesanan <span class="text-blue-400">*</span></label>
+                        <div class="flex items-center justify-between bg-[#020617]/40 border-2 border-blue-800/50 rounded-xl p-2 h-[88px] w-full">
+                            <button type="button" onclick="document.getElementById('volume').stepDown()" class="w-14 h-14 rounded-lg bg-blue-900/40 text-blue-300 hover:text-white font-black text-2xl hover:bg-blue-600 transition-colors flex items-center justify-center border border-blue-500/30 shrink-0"><i class="fas fa-minus"></i></button>
+                            <input type="number" id="volume" name="volume" value="1" min="1" max="100" required class="w-full bg-transparent text-center text-white font-black text-3xl outline-none border-none appearance-none pointer-events-none hide-arrows" readonly>
+                            <button type="button" onclick="document.getElementById('volume').stepUp()" class="w-14 h-14 rounded-lg bg-blue-900/40 text-blue-300 hover:text-white font-black text-2xl hover:bg-blue-600 transition-colors flex items-center justify-center border border-blue-500/30 shrink-0"><i class="fas fa-plus"></i></button>
                         </div>
                     </div>
                 </div>
@@ -703,7 +712,8 @@
                 else pending++; // 'pending' atau yang tidak dikenali masuk sini
                 
                 const size = (o.ukuran || "-").toUpperCase();
-                sizesCount[size] = (sizesCount[size] || 0) + 1;
+                const qty = parseInt(o.volume) || 1;
+                sizesCount[size] = (sizesCount[size] || 0) + qty;
             });
 
             if(document.getElementById('statLunas')) document.getElementById('statLunas').textContent = lunas;
@@ -765,6 +775,7 @@
                     
                     let htmlData = `<td class="px-4 py-4 font-mono text-blue-400/50 text-xs">${index + 1}</td>
                                     <td class="px-6 py-4 font-bold text-white">${order.nama}</td>
+                                    <td class="px-6 py-4 text-center font-bold text-white">${order.volume || 1} Pcs</td>
                                     <td class="px-6 py-4 text-center font-black text-blue-300 text-sm md:text-base">${order.ukuran}</td>`;
                     
                     if (adminAuth) {
@@ -895,6 +906,7 @@
                     wa: document.getElementById('wa').value,
                     ukuran: document.getElementById('ukuran').value,
                     lengan: varLenganChecked ? varLenganChecked.value : "",
+                    volume: document.getElementById('volume').value,
                     fileName: finalName,
                     mimeType: processed.mime,
                     fileData: processed.data.split(',')[1]
