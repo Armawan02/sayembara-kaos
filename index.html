@@ -238,43 +238,55 @@
                 </div>
 
                 <!-- STATISTIK CREATIVE DASHBOARD -->
-                <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6" id="statsContainer">
-                    <!-- Total Lunas -->
-                    <div class="bg-gradient-to-br from-[#020617]/80 to-green-950/20 border border-green-500/30 rounded-xl p-4 flex items-center space-x-4 shadow-lg hover:border-green-400/50 transition-colors">
-                        <div class="w-12 h-12 rounded-full bg-green-900/30 flex items-center justify-center border border-green-500/40 shadow-inner">
-                            <i class="fas fa-check-double text-green-400 text-xl"></i>
+                <div class="hidden admin-col mb-6" id="statsContainer">
+                    <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
+                        <!-- Total Lunas -->
+                        <div class="bg-gradient-to-br from-[#020617]/80 to-green-950/20 border border-green-500/30 rounded-xl p-4 flex items-center space-x-4 shadow-lg hover:border-green-400/50 transition-colors">
+                            <div class="w-12 h-12 rounded-full bg-green-900/30 flex items-center justify-center border border-green-500/40 shadow-inner">
+                                <i class="fas fa-check-double text-green-400 text-xl"></i>
+                            </div>
+                            <div>
+                                <div class="text-xs text-green-300/70 font-bold uppercase tracking-widest mb-0.5">Total Lunas</div>
+                                <div class="text-2xl font-black text-white" id="statLunas">0</div>
+                            </div>
                         </div>
-                        <div>
-                            <div class="text-xs text-green-300/70 font-bold uppercase tracking-widest mb-0.5">Total Lunas</div>
-                            <div class="text-2xl font-black text-white" id="statLunas">0</div>
+                        <!-- Total DP -->
+                        <div class="bg-gradient-to-br from-[#020617]/80 to-purple-950/20 border border-purple-500/30 rounded-xl p-4 flex items-center space-x-4 shadow-lg hover:border-purple-400/50 transition-colors">
+                            <div class="w-12 h-12 rounded-full bg-purple-900/30 flex items-center justify-center border border-purple-500/40 shadow-inner">
+                                <i class="fas fa-hand-holding-usd text-purple-400 text-xl"></i>
+                            </div>
+                            <div>
+                                <div class="text-xs text-purple-300/70 font-bold uppercase tracking-widest mb-0.5">Total DP</div>
+                                <div class="text-2xl font-black text-white" id="statDP">0</div>
+                            </div>
                         </div>
-                    </div>
-                    <!-- Total DP -->
-                    <div class="bg-gradient-to-br from-[#020617]/80 to-purple-950/20 border border-purple-500/30 rounded-xl p-4 flex items-center space-x-4 shadow-lg hover:border-purple-400/50 transition-colors">
-                        <div class="w-12 h-12 rounded-full bg-purple-900/30 flex items-center justify-center border border-purple-500/40 shadow-inner">
-                            <i class="fas fa-hand-holding-usd text-purple-400 text-xl"></i>
+                        <!-- Total Pending (Belum Validasi) -->
+                        <div class="bg-gradient-to-br from-[#020617]/80 to-yellow-950/20 border border-yellow-500/30 rounded-xl p-4 flex items-center space-x-4 shadow-lg hover:border-yellow-400/50 transition-colors">
+                            <div class="w-12 h-12 rounded-full bg-yellow-900/30 flex items-center justify-center border border-yellow-500/40 shadow-inner">
+                                <i class="fas fa-hourglass-half text-yellow-400 text-xl"></i>
+                            </div>
+                            <div>
+                                <div class="text-xs text-yellow-300/70 font-bold uppercase tracking-widest mb-0.5">Pending</div>
+                                <div class="text-2xl font-black text-white" id="statPending">0</div>
+                            </div>
                         </div>
-                        <div>
-                            <div class="text-xs text-purple-300/70 font-bold uppercase tracking-widest mb-0.5">Total DP</div>
-                            <div class="text-2xl font-black text-white" id="statDP">0</div>
-                        </div>
-                    </div>
-                    <!-- Total Pending -->
-                    <div class="bg-gradient-to-br from-[#020617]/80 to-yellow-950/20 border border-yellow-500/30 rounded-xl p-4 flex items-center space-x-4 shadow-lg hover:border-yellow-400/50 transition-colors">
-                        <div class="w-12 h-12 rounded-full bg-yellow-900/30 flex items-center justify-center border border-yellow-500/40 shadow-inner">
-                            <i class="fas fa-hourglass-half text-yellow-400 text-xl"></i>
-                        </div>
-                        <div>
-                            <div class="text-xs text-yellow-300/70 font-bold uppercase tracking-widest mb-0.5">Proses/Pending</div>
-                            <div class="text-2xl font-black text-white" id="statPending">0</div>
+                        <!-- Total Proses (Cetak) -->
+                        <div class="bg-gradient-to-br from-[#020617]/80 to-blue-950/20 border border-blue-500/30 rounded-xl p-4 flex items-center space-x-4 shadow-lg hover:border-blue-400/50 transition-colors">
+                            <div class="w-12 h-12 rounded-full bg-blue-900/30 flex items-center justify-center border border-blue-500/40 shadow-inner">
+                                <i class="fas fa-cogs text-blue-400 text-xl"></i>
+                            </div>
+                            <div>
+                                <div class="text-xs text-blue-300/70 font-bold uppercase tracking-widest mb-0.5">Proses Cetak</div>
+                                <div class="text-2xl font-black text-white" id="statProses">0</div>
+                            </div>
                         </div>
                     </div>
                     <!-- Size Distribution -->
-                    <div class="bg-gradient-to-br from-[#020617]/80 to-blue-950/20 border border-blue-500/30 rounded-xl p-3 shadow-lg hover:border-blue-400/50 transition-colors flex flex-col justify-center">
-                        <div class="text-[10px] text-blue-300/70 font-bold uppercase tracking-widest mb-2 text-center border-b border-blue-500/20 pb-1.5 flex items-center justify-center"><i class="fas fa-ruler mr-2"></i>Distribusi Ukuran</div>
+                    <div class="bg-gradient-to-br from-[#020617]/80 to-indigo-950/20 border border-indigo-500/30 rounded-xl p-3 shadow-lg hover:border-indigo-400/50 transition-colors flex flex-col justify-center">
+                        <div class="text-[10px] text-indigo-300/70 font-bold uppercase tracking-widest mb-2 text-center border-b border-indigo-500/20 pb-1.5 flex items-center justify-center"><i class="fas fa-ruler mr-2"></i>Distribusi Ukuran Keseluruhan</div>
                         <div class="flex flex-wrap gap-1.5 justify-center" id="statSizes">
                             <!-- JS Inject -->
-                            <span class="text-blue-200/50 text-[10px] italic">Memuat...</span>
+                            <span class="text-indigo-200/50 text-[10px] italic">Memuat...</span>
                         </div>
                     </div>
                 </div>
@@ -669,41 +681,45 @@
                 ordersToStats = ordersToStats.filter(o => (o.nama || "").toLowerCase().includes(lowerQ));
             }
             
-            let lunas = 0, dp = 0, pending = 0;
+            let lunas = 0, dp = 0, pending = 0, proses = 0;
             let sizesCount = {};
 
             ordersToStats.forEach(o => {
                 const stat = (o.status || "").toLowerCase();
                 if (stat === 'lunas' || stat === 'selesai' || stat === 'sukses') lunas++;
                 else if (stat === 'dp') dp++;
-                else pending++;
+                else if (stat === 'proses') proses++;
+                else pending++; // 'pending' atau yang tidak dikenali masuk sini
                 
                 const size = (o.ukuran || "-").toUpperCase();
                 sizesCount[size] = (sizesCount[size] || 0) + 1;
             });
 
-            document.getElementById('statLunas').textContent = lunas;
-            document.getElementById('statDP').textContent = dp;
-            document.getElementById('statPending').textContent = pending;
+            if(document.getElementById('statLunas')) document.getElementById('statLunas').textContent = lunas;
+            if(document.getElementById('statDP')) document.getElementById('statDP').textContent = dp;
+            if(document.getElementById('statPending')) document.getElementById('statPending').textContent = pending;
+            if(document.getElementById('statProses')) document.getElementById('statProses').textContent = proses;
 
             const sizeContainer = document.getElementById('statSizes');
-            sizeContainer.innerHTML = '';
-            
-            const sizeOrder = ["S", "M", "L", "XL", "2XL", "3XL", "4XL"];
-            const sortedSizes = Object.keys(sizesCount).sort((a, b) => {
-                let ia = sizeOrder.indexOf(a);
-                let ib = sizeOrder.indexOf(b);
-                if(ia === -1) ia = 99;
-                if(ib === -1) ib = 99;
-                return ia - ib;
-            });
-
-            if (sortedSizes.length === 0) {
-                sizeContainer.innerHTML = '<span class="text-blue-200/50 text-[10px] italic">Tidak ada data</span>';
-            } else {
-                sortedSizes.forEach(s => {
-                    sizeContainer.innerHTML += `<span class="bg-blue-900/60 border border-blue-500/40 text-blue-100 text-[11px] px-2 py-0.5 rounded-md font-black shadow-sm">${s}: ${sizesCount[s]}</span>`;
+            if(sizeContainer) {
+                sizeContainer.innerHTML = '';
+                
+                const sizeOrder = ["S", "M", "L", "XL", "2XL", "3XL", "4XL"];
+                const sortedSizes = Object.keys(sizesCount).sort((a, b) => {
+                    let ia = sizeOrder.indexOf(a);
+                    let ib = sizeOrder.indexOf(b);
+                    if(ia === -1) ia = 99;
+                    if(ib === -1) ib = 99;
+                    return ia - ib;
                 });
+
+                if (sortedSizes.length === 0) {
+                    sizeContainer.innerHTML = '<span class="text-indigo-200/50 text-[10px] italic">Tidak ada data</span>';
+                } else {
+                    sortedSizes.forEach(s => {
+                        sizeContainer.innerHTML += `<span class="bg-indigo-900/60 border border-indigo-500/40 text-indigo-100 text-[11px] px-2 py-0.5 rounded-md font-black shadow-sm">${s}: ${sizesCount[s]}</span>`;
+                    });
+                }
             }
         }
 
