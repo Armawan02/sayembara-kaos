@@ -106,7 +106,7 @@
                 <i class="fas fa-clock text-red-400 animate-pulse text-lg"></i>
                 <div class="flex items-center space-x-2">
                     <span id="mainTimerText" class="font-mono text-xl md:text-2xl font-bold text-white tracking-widest drop-shadow-md">00.00.00</span>
-                    <span class="text-red-300/80 font-semibold text-xs md:text-sm">| <span id="mainTimerDesc">Sisa</span> waktu</span>
+                    <span class="text-red-300/80 font-semibold text-xs md:text-sm">| <span id="mainTimerDesc">Sisa</span> </span>
                 </div>
             </div>
             
@@ -941,8 +941,18 @@
                 else if (statProd === 'selesai' || statProd === 'sukses') selesai++;
                 
                 const size = (o.ukuran || "-").toUpperCase();
+                const lengan = (o.lengan || "").toLowerCase();
                 const qty = parseInt(o.volume) || 1;
-                sizesCount[size] = (sizesCount[size] || 0) + qty;
+                
+                if (!sizesCount[size]) {
+                    sizesCount[size] = { total: 0, pendek: 0, panjang: 0 };
+                }
+                sizesCount[size].total += qty;
+                if (lengan.includes('pendek')) {
+                    sizesCount[size].pendek += qty;
+                } else if (lengan.includes('panjang')) {
+                    sizesCount[size].panjang += qty;
+                }
             });
 
             if(document.getElementById('statLunas')) document.getElementById('statLunas').textContent = lunas;
@@ -968,7 +978,11 @@
                     sizeContainer.innerHTML = '<span class="text-indigo-200/50 text-[10px] italic">Tidak ada data</span>';
                 } else {
                     sortedSizes.forEach(s => {
-                        sizeContainer.innerHTML += `<span class="bg-indigo-900/60 border border-indigo-500/40 text-indigo-100 text-[11px] px-2 py-0.5 rounded-md font-black shadow-sm">${s}: ${sizesCount[s]}</span>`;
+                        const count = sizesCount[s];
+                        sizeContainer.innerHTML += `<span class="bg-indigo-900/60 border border-indigo-500/40 text-indigo-100 px-2 py-1 rounded-md shadow-sm flex flex-col items-center leading-tight">
+                            <span class="font-black text-xs">${s}: ${count.total}</span>
+                            <span class="text-[9px] text-indigo-300 font-medium">${count.pendek} Pdk | ${count.panjang} Pjg</span>
+                        </span>`;
                     });
                 }
             }
